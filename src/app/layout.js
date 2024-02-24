@@ -1,7 +1,21 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
+import localFont from 'next/font/local'
+import LeoProvider from '@/providers/LeoProvider'
+import '@/styles/index.scss'
 
-const inter = Inter({ subsets: ["latin"] });
+const myFont = localFont({
+  src: [
+    {
+      path: '../fonts/helveticaneueltpro-roman-webfont.woff2',
+      weight: '400',
+      style: 'normal'
+    },
+    {
+      path: '../fonts/helveticaneueltpro-it-webfont.woff2',
+      weight: '400',
+      style: 'italic'
+    }
+  ]
+})
 
 export const metadata = {
   title: "Create Next App",
@@ -11,7 +25,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <LeoProvider>
+        <body className={myFont.className}>
+          {children}
+        </body>
+      </LeoProvider>
     </html>
   );
 }

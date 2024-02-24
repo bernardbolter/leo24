@@ -1,0 +1,32 @@
+@import './vars.module.scss';
+@import './construction.scss';
+@import './nav.scss';
+@import './home.scss';
+@import './about.scss';
+@import './project.scss';
+@import './project-info.scss';
+@import './thumb.scss';
+@import './overview.scss';
+@import './projects.scss';
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    pointer-events: none;
+}
+
+video {
+    pointer-events: none; 
+}
+
+html {
+    scrollbar-width: none;
+}

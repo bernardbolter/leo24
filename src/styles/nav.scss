@@ -1,0 +1,16 @@
+.nav-name {
+    position: absolute;
+    top: 120px;
+    left: 10px;
+    background: $info-back;
+    z-index: 999;
+    border-radius: 20px;
+    color: white;
+    font-weight: 400;
+    font-size: 15px;
+    margin: 0;
+    padding: 10px 14px;
+    white-space: nowrap;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+}
