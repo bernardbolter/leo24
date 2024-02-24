@@ -8,7 +8,9 @@ export const LeoContext = createContext()
 const LeoProvider = ({ children }) => {
     const [leo, setLeo] = useState({
         dataLoaded: false,
-        isLowPoer: false
+        dataError: false,
+        isLowPower: false,
+        rawPosts: []
     })
 
     useEffect(() => {
@@ -17,11 +19,13 @@ const LeoProvider = ({ children }) => {
 
             if (!response.ok) {
                 console.log(response)
+                setLeo(state => ({ ...state, dataError: true }))
                 return
             }
 
             const posts = await response.json()
-            console.log(posts)
+            setLeo(state => ({ ...state, rawPosts: posts, dataLoaded: true }))
+
         }
         loadData()
     }, [])
