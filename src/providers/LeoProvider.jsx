@@ -2,8 +2,6 @@
 
 import React, { useState, createContext, useEffect } from 'react'
 
-import { getAllData } from '@/wp/wpGraphql'
-
 export const LeoContext = createContext()
 
 const LeoProvider = ({ children }) => {
