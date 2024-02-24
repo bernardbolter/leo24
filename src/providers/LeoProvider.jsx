@@ -4,6 +4,7 @@ import React, { useState, createContext, useEffect } from 'react'
 
 export const LeoContext = createContext()
 
+
 const LeoProvider = ({ children }) => {
     const [leo, setLeo] = useState({
         dataLoaded: false,
