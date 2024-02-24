@@ -32,10 +32,8 @@ jobs:
       - name: Deploy to FTP Server
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-            server: ssh.strato.de
+            server: ftp.strato.de
             username: 59659096.swh.strato-hosting.eu
             password: ${{ secrets.FTP_PASSWORD }}
             local-dir: out/
             server-dir: '/'
-            protocol: ftps
-            port: 22
