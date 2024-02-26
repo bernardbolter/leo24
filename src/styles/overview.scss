@@ -1,3 +1,106 @@
 .overview-container {
-    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: $background;
+}.posts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 33.33333vw;
+    grid-auto-flow: dense;
+    gap: 2px;
+    border: 2px solid $background;
+
+    @media screen and (min-width: $breakpoint) {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-auto-rows: 16.6666666vw;
+    }
+
+    a {
+        color: $background;
+        text-decoration: none;
+    }
+}
+
+.post-container video.poster {
+    filter: blur(10px);
+}
+
+
+.landscape {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.portrait {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.small-square {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.large-square {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.post-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+    opacity: .85;
+    transition: opacity .5s ease-in-out;
+
+    &:hover {
+        opacity: 1;
+        transition: opacity .5s ease-in-out;
+    }
+
+    h1 {
+        font-size: 10px;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+    }
+
+    video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+
+        .poster {
+            filter: blur(10px);
+        }
+    }
+}
+
+.post-container .overview-tooltip {
+    visibility: hidden;
+    width: 120px;
+    background: $background;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 7px;
+    color: $nav-back;
+    position: absolute;
+    z-index: 2001;
+    transition: all .3s ease-in-out;
+}
+
+.post-container:hover .overview-tooltip {
+    visibility: visible;
+    transition: all .3s ease-in-out;
 }
