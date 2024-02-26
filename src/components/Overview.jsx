@@ -150,7 +150,7 @@ const Overview = ({ post }) => {
             title={post.title.rendered}
             onClick={() => {
                 console.log(post.id)
-                setLeo(state => ({ ...state, projectID: post.id }))
+                setLeo(state => ({ ...state, projectID: post.id, aboutOpen: false, infoOpen: false }))
             }}
         />
     )

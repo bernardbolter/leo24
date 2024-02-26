@@ -1,3 +1,104 @@
 .project-info-container {
-    display: block;
+    width: 85%;
+    max-height: calc(100vh - 98px);
+    overflow: scroll;
+    overflow-x: hidden;
+    background: $info-back;
+    position: absolute;
+    left: 10px;
+    top: 59px;
+    border-radius: 15px;
+    max-width: 400px;
+    padding: 15px;
+    z-index: 999;
+    opacity: 1;
+    visibility: visible;
+    transition: z-index .7s step-start, visibility 0s, opacity .7s ease-in-out;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    scrollbar-width: none;
+
+    h1 {
+        color: white !important;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.3em;
+        margin: 20px 10px;
+        padding: 0;
+    }
+
+    h2 {
+        color: white;
+        font-size: 13px;
+        font-weight: 400;
+        margin: 0 10px 0;
+        padding: 0;
+    }
+
+    p {
+        font-size: 13px;
+        font-weight: 400;
+        color: #999;
+        margin: 0 0 25px 10px;
+    }
+}
+
+.project-info-container-hide {
+    visibility: 0;
+    opacity: 0;
+    z-index: -10;
+    transition: z-index .7s step-end, opacity .7s, visibility 0s ease-in-out;
+}
+
+.project-title {
+    position: absolute;
+    left: 184px;
+    top: 10px;
+    background: $info-back;
+    border-radius: 20px;
+    color: white;
+    font-weight: 400;
+    font-size: 15px;
+    margin: 0;
+    padding: 0 14px;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    white-space: nowrap;
+    cursor: pointer;
+    transform: scale(1);
+    transition: all .2s ease-in-out;
+    height: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        transform: scale(1.05);
+        transition: all .2s ease-in-out; 
+    }
+}
+
+.info-close {
+    width: 39px;
+    height: 39px;
+    background: $info-back;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    z-index: 999;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    position: absolute;
+    z-index: 1002;
+    top: 10px;
+
+    img {
+        width: 100%;
+        border-radius: 50%;
+        opacity: .65;
+        cursor: pointer;
+    }
 }

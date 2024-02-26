@@ -5,28 +5,13 @@ import { useWindowSize } from "@/helpers/useWindowSize"
 
 import About from "./About"
 import Overview from './Overview'
+import Project from './Project'
 
 const Overviews = () => {
     const [leo] = useContext(LeoContext)
     const { desktopProjects, mobileProjects} = leo
     const size = useWindowSize()
     const [theOverviews, setTheOverviews] = useState([])
-    const [viewProjects, setViewProjects] = useState(false)
-
-    // console.log(leo)
-
-    // const theOverviews = useMemo(() => {
-    //     console.log(size)
-    //     if (size.width > 850) {
-    //         return desktopProjects.map((post, i) => {
-    //             return <Overview post={post} key={`${post.acf.desktop_order}-desktop-${i}`} />
-    //         })
-    //     } else {
-    //         return mobileProjects.map((post, i) => {
-    //             return <Overview post={post} key={`${post.acf.mobile_order}-mobile-${i}`} />
-    //         })
-    //      } 
-    // }, [size.width, mobileProjects, desktopProjects])
 
     useEffect(() => {
         console.log("using effect")
@@ -43,8 +28,8 @@ const Overviews = () => {
     return (
         <section className="overview-container">
             <About />
-            {viewProjects ? (
-                <Projects />
+            {leo.viewProjects ? (
+                <Project />
             ) : (
                 <div className="posts-container">
                     {theOverviews.map((overview, i) => <Overview post={overview} key={`${overview.screen}-${i}`} />)}

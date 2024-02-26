@@ -20,7 +20,10 @@ const LeoProvider = ({ children }) => {
         mobileProjects: [],
         projectID: 0,
         projectsArray: [],
-        viewProjects: false
+        currentProject: {},
+        viewProjects: false,
+        aboutOpen: false,
+        infoOpen: false
     })
 
     useEffect(() => {
@@ -66,7 +69,7 @@ const LeoProvider = ({ children }) => {
     useEffect(() => {
         if (leo.projectID !== 0) {
             const newProjects = createProjectsWithImageArray(leo.projectID, leo.rawPosts, size.width)
-            setLeo(state => ({ ...state, projectsArray: newProjects, viewProjects: true  }))
+            setLeo(state => ({ ...state, currentProject: newProjects[0], projectsArray: newProjects, viewProjects: true  }))
         }
     }, [leo.projectID, leo.rawPosts, size.width])
     

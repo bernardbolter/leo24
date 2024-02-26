@@ -11,7 +11,6 @@ import Title from "./Title"
 const About = () => {
     const [leo, setLeo] = useContext(LeoContext)
     const size = useWindowSize()
-    const [aboutOpen, setAboutOpen] = useState(false)
 
     const description = useMemo(() => {
         return DOMPurify.sanitize(leo.about.description)
@@ -28,8 +27,8 @@ const About = () => {
 
     return (
         <section className="about-outter">
-            <Title aboutOpen={aboutOpen} setAboutOpen={setAboutOpen} />
-            <div className={aboutOpen ? "about-container" : "about-container about-no-show"}>
+            <Title />
+            <div className={leo.aboutOpen ? "about-container" : "about-container about-no-show"}>
                 <h2 dangerouslySetInnerHTML={{__html: description}}/>
                 <p>About</p>
                 <div className="services-container">
