@@ -57,8 +57,8 @@
     mask-composite: exclude;
     -webkit-mask-composite: xor;
     cursor: pointer;
-    -webkit-mask-position: 100% 100%;
-    mask-position: 100% 100%;
+    // -webkit-mask-position: 100% 100%;
+    // mask-position: 100% 100%;
 
     @media screen and (min-width: $breakpoint) {
         width: 39px;
@@ -67,7 +67,7 @@
 }
 
 .thumb-overlay-on {
-    mask-position: 100% 100%;
+    mask-position: 0% 0%;
     -webkit-mask-position: 0% 0%;
     // transition: 4s;
 }
