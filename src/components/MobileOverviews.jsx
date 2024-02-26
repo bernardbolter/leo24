@@ -1,26 +1,21 @@
-import { useContext, useMemo, useCallback } from "react"
-import { LeoContext } from "@/providers/LeoProvider"
-import { useWindowSize } from "@/helpers/useWindowSize"
-
 import About from './About'
 import Overview from "./Overview"
 
-const MobileOverviews = () => {
-    const [leo, setLeo] = useContext(LeoContext)
-    const size = useWindowSize()
-    console.log("mobile o: ",leo)
+const MobileOverviews = ({ projects }) => {
 
-    var overviewsMobile = useMemo(() => {
-        return leo.mobileProjects.map((overview, i) => (
-            <Overview overview={overview} key={i} isDesktop={false} />
-        ))
-    }, [size, leo.mobileProjects])
-    
     return (
         <div className="overview-container">
             <About />
             <div className="overviews-container">
-                {overviewsMobile}
+                {projects.map(project => (
+                    <Overview
+                        overview={project.overview}
+                        id={project.id}
+                        title={project.title.rendered}
+                        key={project.id}
+                        isDesktop={false}
+                    />
+                ))}
             </div>
         </div>
     )

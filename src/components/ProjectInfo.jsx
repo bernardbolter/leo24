@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react"
+import { useContext, useMemo, useRef, useEffect } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import DOMPurify from "dompurify"
 import Image from "next/image"
@@ -45,9 +45,15 @@ const infos = [
     { slug: "webdesign", name: "Web Design"},
 ]
 
-const ProjectInfo = () => {
+const ProjectInfo = ({ project }) => {
     const [leo, setLeo] = useContext(LeoContext)
-    const { acf } = leo.currentProject
+    const { acf } = project
+    const projectTitleRef = useRef(null)
+
+    useEffect(() => {
+        console.log(projectTitleRef.current)
+        setLeo(state => ({ ...state, currentTitleWidth: projectTitleRef.current.clientWidth }))
+    }, [projectTitleRef])
 
     const summary = useMemo(() => {
         return DOMPurify.sanitize(acf.project_summary)
@@ -80,6 +86,7 @@ const ProjectInfo = () => {
             ) : (
                 <h1 
                     className="project-title"
+                    ref={projectTitleRef}
                     style={{
                         left: leo.aboutOpen ? 59 : 183
                     }}
@@ -88,7 +95,7 @@ const ProjectInfo = () => {
                         infoOpen: true,
                         aboutOpen: state.aboutOpen ? false : false
                     }))}
-                >{leo.currentProject.title.rendered}</h1>
+                >{project.title.rendered}</h1>
             )}
             <div className={leo.infoOpen ? 'project-info-container' : 'project-info-container project-info-container-hide'}>
                     {acf.project_summary.length !== 0 && (

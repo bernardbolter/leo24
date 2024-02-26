@@ -1,21 +1,19 @@
 "use client"
 
 import { useContext, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
 import { LeoContext } from '@/providers/LeoProvider'
 import { useWindowSize } from '@/helpers/useWindowSize'
 
 import Loader from '@/components/Loader'
 import Error from '@/components/Error'
 
-import DesktopOverviews from '@/components/DesktopOverviews'
-import MobileOverviews from '@/components/MobileOverviews'
+import DesktopProject from '@/components/DesktopProject'
+import MobileProject from '@/components/MobileProject'
 
-const Home = () => {
+const Projects = () => {
     const [leo, setLeo] = useContext(LeoContext)
-    const size = useWindowSize()
     const videoRef = useRef()
-    const router = useRouter()
+    const size = useWindowSize()
 
     useEffect(() => {
         videoRef.current.play()
@@ -24,8 +22,7 @@ const Home = () => {
         })
         .catch((error) => {
             if (error.name === "NotAllowedError") {
-                setLeo(state => ({ ...state, isLowPower: true }))
-                router.push('/projects')
+               setLeo(state => ({ ...state, isLowPower: true }))
             }
         })
     }, [])
@@ -37,10 +34,10 @@ const Home = () => {
                     <Loader />
                 ) : leo.dataError ? (
                     <Error />
-                ) : size.width > 850  ? <DesktopOverviews projects={leo.desktopProjects} /> : <MobileOverviews projects={leo.mobileProjects}/>
+                ) : size.width > 850  ? <DesktopProject /> : <MobileProject />
             }
         </>
     )
 }
 
-export default Home
+export default Projects

@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useState, createContext, useEffect } from 'react'
-import { arrangePosts } from '@/helpers'
+import { arrangeDesktopPosts, arrangeMobilePosts } from '@/helpers'
 import { useWindowSize } from '@/helpers/useWindowSize'
-import { createProjectsWithImageArray } from '@/helpers'
 
 export const LeoContext = createContext()
 
@@ -17,13 +16,14 @@ const LeoProvider = ({ children }) => {
         rawPosts: [],
         about: {},
         desktopProjects: [],
+        sortedDesktop: [],
         mobileProjects: [],
-        projectID: 0,
-        projectsArray: [],
+        soretedMobile: [],
+        currentID: 0,
         currentProject: {},
-        viewProjects: false,
         aboutOpen: false,
-        infoOpen: false
+        infoOpen: false,
+        currentTitleWidth: 0
     })
 
     useEffect(() => {
@@ -36,10 +36,18 @@ const LeoProvider = ({ children }) => {
             }
 
             const posts = await response.json()
-            setLeo(state => ({ ...state, rawPosts: posts, dataLoaded: true }))
+            setLeo(state => ({ 
+                ...state, 
+                rawPosts: posts, 
+                mobileProjects: arrangeMobilePosts(posts),
+                desktopProjects: arrangeDesktopPosts(posts),
+                dataLoaded: true,
+            }))
 
         }
-        loadData()
+        if (leo.rawPosts.length === 0) {
+            loadData()
+        }
     }, [])
 
     useEffect(() => {
@@ -55,23 +63,10 @@ const LeoProvider = ({ children }) => {
             const aboutData = await response.json()
             setLeo(state => ({ ...state, about: aboutData.acf }))
         }
-        loadAbout()
-    }, [])
-
-    useEffect(() => {
-        setLeo(state => ({
-            ...state,
-            desktopProjects: arrangePosts(leo.rawPosts, true),
-            mobileProjects: arrangePosts(leo.rawPosts, false)
-        }))
-    }, [leo.rawPosts])
-
-    useEffect(() => {
-        if (leo.projectID !== 0) {
-            const newProjects = createProjectsWithImageArray(leo.projectID, leo.rawPosts, size.width)
-            setLeo(state => ({ ...state, currentProject: newProjects[0], projectsArray: newProjects, viewProjects: true  }))
+        if (Object.keys(leo.about).length === 0) {
+            loadAbout()
         }
-    }, [leo.projectID, leo.rawPosts, size.width])
+    }, [])
     
     return (
         <LeoContext.Provider

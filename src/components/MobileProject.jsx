@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 
-const MobileProjects = () => {
+const MobileProject = () => {
     const [leo, setLeo] = useContext(LeoContext)
     console.log("mobile p: ",leo)
     
@@ -12,4 +12,4 @@ const MobileProjects = () => {
     )
 }
 
-export default MobileProjects
+export default MobileProject

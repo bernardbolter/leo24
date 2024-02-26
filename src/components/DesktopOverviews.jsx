@@ -1,26 +1,21 @@
-import { useContext, useMemo } from "react"
-import { LeoContext } from "@/providers/LeoProvider"
-import { useWindowSize } from "@/helpers/useWindowSize"
-
 import About from "./About"
 import Overview from "./Overview"
 
-const DesktopOverviews = () => {
-    const [leo, setLeo] = useContext(LeoContext)
-    const size = useWindowSize()
-    console.log("desktop o: ",leo.desktopProjects)
+const DesktopOverviews = ({ projects }) => {
 
-    const overviewsDesktop = useMemo(() => {
-        return leo.desktopProjects.map((overview, i) => (
-            <Overview overview={overview} key={`desktop-${i}`} isDesktop={true} />
-        ))
-    }, [size, leo.desktopProjects])
-    
     return (
         <div className="overview-container">
             <About />
             <div className="overviews-container">
-                {overviewsDesktop}
+                {projects.map(project => (
+                    <Overview 
+                        overview={project.overview} 
+                        id={project.id}
+                        title={project.title.rendered}
+                        key={project.id}
+                        isDesktop={true}
+                    />
+                ))}
             </div>
         </div>
     )

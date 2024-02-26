@@ -95,6 +95,13 @@
     position: absolute;
     z-index: 1002;
     top: 10px;
+    transform: scale(1);
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+        transition: all .2s ease-in-out; 
+    }
 
     img {
         width: 100%;

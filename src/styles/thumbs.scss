@@ -3,4 +3,65 @@
     z-index: 301;
     top: 10px;
     left: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.project-thumb {
+    width: 35px;
+    height: 35px;
+    margin:  5px 0 0 0;
+    transform: scale(1);
+    transition: all .2s ease-in-out;
+
+    @media screen and (min-width: $breakpoint) {
+        margin: 0 7px 10px 0;
+        width: 39px;
+        height: 39px;
+    }
+
+    img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+
+        @media screen and (min-width: $breakpoint) {
+            width: 39px;
+            height: 39px;
+        }
+    }
+
+    &:hover {
+        transform: scale(1.1);
+        transition: all .2s ease-in-out;
+    }
+}
+
+.thumb-overlay {
+    position: absolute;
+    background: $info-back-darker;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    mask:
+        linear-gradient(#000 0 0),
+        linear-gradient(270deg, #000 50%, #0000 0) content-box 
+        0% 0% / 200% 200% no-repeat;
+    -webkit-mask:
+        linear-gradient(#000 0 0),
+        linear-gradient(270deg, #000 50%, #0000 0) content-box 
+        0% 0% / 200% 200% no-repeat;
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    cursor: pointer;
+    -webkit-mask-position: 100% 100%;
+    mask-position: 100% 100%;
+
+    @media screen and (min-width: $breakpoint) {
+        width: 39px;
+        height: 39px;
+    }
 }
