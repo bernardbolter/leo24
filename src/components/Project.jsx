@@ -7,6 +7,7 @@ import About from "./About"
 import ProjectInfo from "./ProjectInfo"
 import Thumbs from "./Thumbs"
 import Loader from "./Loader"
+import ProjectImages from './ProjectImages'
 
 const Project = () => {
     const [leo, setLeo] = useContext(LeoContext)
@@ -21,15 +22,7 @@ const Project = () => {
                     <About />
                     <ProjectInfo />
                     <Thumbs />
-                    <h1>Project</h1>
-                    <h1>Project</h1>
-                    <h1>Project</h1>
-                    <h1>Project</h1>
-                    <h1>Project</h1>
-                    <h1>Project</h1>
-                    <h1>Project</h1>
-                    <h1>Project</h1>
-                    <h1>Project</h1>
+                    <ProjectImages />
                 </section>
             )}
         </>
