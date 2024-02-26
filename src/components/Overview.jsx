@@ -3,7 +3,7 @@ import { LeoContext } from '@/providers/LeoProvider'
 import { useWindowSize } from '@/helpers/useWindowSize'
 import DOMPurify from 'dompurify'
 
-const Overview = ({ post }) => {
+const Overview = ({ overview, isDesktop }) => {
     // console.log('over change')
     const {
         overview_size,
@@ -17,7 +17,7 @@ const Overview = ({ post }) => {
         overview_portrait_image,
         overview_portrait_video,
         overview_portrait_video_mobile
-    } = post.acf
+    } = overview.acf
 
     // console.log("over square ", overview_square_video)
     const size = useWindowSize()
@@ -30,7 +30,7 @@ const Overview = ({ post }) => {
         if (overview_poster_image) {
             setPoster(overview_poster_image.url)
         } else {
-            if (size.width > 850) {
+            if (isDesktop) {
                 setPoster('https://www.tlbx.app/200-300.svg')
             } else {
                 setPoster('https://www.tlbx.app/200-300-e6cf8b.svg')
@@ -38,7 +38,7 @@ const Overview = ({ post }) => {
         }
 
         // DESKTOP
-        if (size.width > 850) {
+        if (isDesktop) {
             if (overview_size === 'landscape') {
                 if (overview_landscape_video.length !== 0) {
                     setTheOverview(`<video src="${overview_landscape_video}" autoplay loop playsinline muted poster="${poster}"></video>`)
@@ -49,7 +49,7 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             } else if (overview_size === 'portrait') {
                 if (overview_portrait_video.length !== 0) {
@@ -61,7 +61,7 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img class="desktop" src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img class="desktop" src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             } else if (overview_size === 'large-square') {
                 if (overview_square_video.length !== 0) {
@@ -73,7 +73,7 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             } else {
                 if (overview_square_video.length !== 0) {
@@ -85,7 +85,7 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             }
         // MOBILE
@@ -100,7 +100,7 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             } else if (overview_size === 'portrait') {
                 if (overview_portrait_video_mobile.length !== 0) {
@@ -112,7 +112,7 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img class="mobile"src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img class="mobile"src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             } else if (overview_size === 'large-square') {
                 if (overview_square_video_mobile.length !== 0) {
@@ -124,7 +124,7 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             } else {
                 if (overview_square_video_mobile.length !== 0) {
@@ -136,21 +136,21 @@ const Overview = ({ post }) => {
                     } else {
                         src = poster
                     }
-                    setTheOverview(`<img src="${src}" alt="thumbnail from ${post.title.rendered} project" />`)
+                    setTheOverview(`<img src="${src}" alt="thumbnail from ${overview.title.rendered} project" />`)
                 }
             }
         }
-    }, [post])
+    }, [overview])
 
 
     return (
         <a
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(theOverview)}}
             className={`post-container ${overview_size}`}
-            title={post.title.rendered}
+            title={overview.title.rendered}
             onClick={() => {
-                console.log(post.id)
-                setLeo(state => ({ ...state, projectID: post.id, aboutOpen: false, infoOpen: false }))
+                console.log(overview.id)
+                setLeo(state => ({ ...state, projectID: overview.id, aboutOpen: false, infoOpen: false }))
             }}
         />
     )
