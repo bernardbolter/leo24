@@ -23,7 +23,8 @@ const LeoProvider = ({ children }) => {
         currentProject: {},
         aboutOpen: false,
         infoOpen: false,
-        currentTitleWidth: 0
+        currentTitleWidth: 0,
+        currentImageIndex: 0
     })
 
     useEffect(() => {

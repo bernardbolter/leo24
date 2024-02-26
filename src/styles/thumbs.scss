@@ -65,3 +65,9 @@
         height: 39px;
     }
 }
+
+.thumb-overlay-on {
+    mask-position: 100% 100%;
+    -webkit-mask-position: 0% 0%;
+    // transition: 4s;
+}
