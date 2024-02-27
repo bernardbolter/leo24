@@ -19,9 +19,7 @@ const Home = () => {
 
     useEffect(() => {
         videoRef.current.play()
-        .then(() => {
-            console.log('playing')
-        })
+        .then(() => {})
         .catch((error) => {
             if (error.name === "NotAllowedError") {
                 setLeo(state => ({ ...state, isLowPower: true }))

@@ -8,6 +8,7 @@
     margin: 0;
     padding: 0;
     background: $background;
+    overflow: hidden;
 }
 
 .project-images {
@@ -15,10 +16,25 @@
     flex-direction: row;
     flex-wrap: nowrap;
     position: fixed;
-    z-index: 200;
+    background: $background;
+}
+
+.project-image {
     width: 100%;
     height: 100vh;
-    left: 0;
-    top: 0;
-    background: $background;
+    object-fit: cover;
+    position: relative;
+
+    video {
+        width: 100%;
+        height: 100vh;
+        object-fit: fill;
+    }
+
+    img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+    }
+
 }

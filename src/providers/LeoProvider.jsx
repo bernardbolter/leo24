@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, createContext, useEffect } from 'react'
+import React, { useState, createContext, useEffect, useRef } from 'react'
 import { arrangeDesktopPosts, arrangeMobilePosts } from '@/helpers'
 import { useWindowSize } from '@/helpers/useWindowSize'
 
@@ -8,6 +8,7 @@ export const LeoContext = createContext()
 
 const LeoProvider = ({ children }) => {
     const size = useWindowSize()
+    const timer = useRef(null)
     const [leo, setLeo] = useState({
         dataLoaded: false,
         dataError: false,
@@ -24,9 +25,35 @@ const LeoProvider = ({ children }) => {
         aboutOpen: false,
         infoOpen: false,
         currentTitleWidth: 0,
-        currentImageIndex: 0
+        currentImageIndex: 0,
+        currentImageLength: 0,
+        timerPaused: false,
+        restartVideo: false
     })
 
+    const handleTimer = (index, length, start) => {
+        // console.log("index: ", index)
+        // console.log("length: ", length)
+        // console.log("start: ", start)
+
+        if (start) {
+            var nextIndex = index + 1
+            var nextLength = parseInt(leo.currentProject.imageArray[index + 1].video_length.concat("000"))
+            // console.log("next i: ", nextIndex)
+            // console.log("next l: ", nextLength)
+            timer.current = setTimeout(() => {
+                handleTimer(nextIndex, nextLength, true)
+                setLeo(state => ({ ...state, currentImageIndex: nextIndex, restartVideo: true }))
+                setTimeout(() => {
+                    setLeo(state => ({ ...state, restartVideo: false }))
+                }, 100)
+            }, length)
+        } else {
+            console.log("time to stop")
+           clearTimeout(timer.current) 
+        }
+    }
+    
     useEffect(() => {
         async function loadData() {
             const response = await fetch('https://leonhardlaupichler.com/backend/wp-json/wp/v2/posts?acf_format=standard&per_page=100')
@@ -71,7 +98,7 @@ const LeoProvider = ({ children }) => {
     
     return (
         <LeoContext.Provider
-            value={[leo, setLeo]}
+            value={[leo, setLeo, handleTimer]}
         >
             {children}
         </LeoContext.Provider>

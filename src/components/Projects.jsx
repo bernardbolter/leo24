@@ -6,7 +6,8 @@ import { useWindowSize } from "@/helpers/useWindowSize"
 import Loader from "./Loader"
 
 const Projects = () => {
-    const [leo, setLeo] = useContext(LeoContext)
+    const {leo, setLeo, handleTimer} = useContext(LeoContext)
+    console.log(handleTimer)
     const size = useWindowSize()
 
     return (

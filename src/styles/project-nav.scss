@@ -1,0 +1,63 @@
+.project-nav-container {
+    position: fixed;
+    z-index: 11;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.project-nav-left {
+    width: 50%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: default;
+}
+
+.project-nav-left-cursor {
+    cursor: pointer;
+}
+
+.project-nav-left-button {
+    display: none;
+    margin: 0 0 0 10px;
+}
+
+.project-nav-left-button-show {
+    display: block;
+}
+
+.project-nav-right {
+    width: 50%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: default;
+}
+
+.project-nav-right-cursor {
+    cursor: pointer;
+}
+
+.project-nav-right-button {
+    display: none;
+    margin: 0 10px 0 0;
+    transform: rotate(180deg);
+}
+
+.project-nav-right-button-show {
+    display: block;
+}

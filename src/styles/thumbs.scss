@@ -15,6 +15,7 @@
     margin:  5px 0 0 0;
     transform: scale(1);
     transition: all .2s ease-in-out;
+    cursor: pointer;
 
     @media screen and (min-width: $breakpoint) {
         margin: 0 7px 10px 0;
@@ -40,6 +41,14 @@
     }
 }
 
+.project-thumb-no-hover {
+    cursor: default;
+
+    &:hover {
+        transform: scale(1) !important;
+    }
+}
+
 .thumb-overlay {
     position: absolute;
     background: $info-back-darker;
@@ -56,18 +65,9 @@
         0% 0% / 200% 200% no-repeat;
     mask-composite: exclude;
     -webkit-mask-composite: xor;
-    cursor: pointer;
-    // -webkit-mask-position: 100% 100%;
-    // mask-position: 100% 100%;
 
     @media screen and (min-width: $breakpoint) {
         width: 39px;
         height: 39px;
     }
-}
-
-.thumb-overlay-on {
-    mask-position: 0% 0%;
-    -webkit-mask-position: 0% 0%;
-    // transition: 4s;
 }

@@ -51,9 +51,9 @@ const ProjectInfo = ({ project }) => {
     const projectTitleRef = useRef(null)
 
     useEffect(() => {
-        console.log(projectTitleRef.current)
+        console.log(projectTitleRef.current.clientWidth)
         setLeo(state => ({ ...state, currentTitleWidth: projectTitleRef.current.clientWidth }))
-    }, [projectTitleRef])
+    }, [projectTitleRef, leo.currentProject])
 
     const summary = useMemo(() => {
         return DOMPurify.sanitize(acf.project_summary)
@@ -74,6 +74,7 @@ const ProjectInfo = ({ project }) => {
                     onClick={() => setLeo(state => ({
                         ...state,
                         infoOpen: false,
+                        timerPaused: false
                     }))}   
                 >
                     <Image
@@ -93,7 +94,8 @@ const ProjectInfo = ({ project }) => {
                     onClick={() => setLeo( state => ({
                         ...state,
                         infoOpen: true,
-                        aboutOpen: state.aboutOpen ? false : false
+                        aboutOpen: state.aboutOpen ? false : false,
+                        timerPaused: true
                     }))}
                 >{project.title.rendered}</h1>
             )}

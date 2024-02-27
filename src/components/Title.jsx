@@ -4,8 +4,8 @@ import Image from 'next/image'
 import useSound from 'use-sound'
 import Audios from './Audio'
 
-const Title = ({ aboutOpen, setAboutOpen }) => {
-   const [leo, setLeo] = useContext(LeoContext)
+const Title = () => {
+   const [leo, setLeo, handleTimer] = useContext(LeoContext)
    const [audio, setAudio] = useState(Audios[Math.floor(Math.random()*Audios.length)])
    const [play] = useSound(audio)
 
@@ -22,6 +22,7 @@ const Title = ({ aboutOpen, setAboutOpen }) => {
                onClick={() => setLeo(state => ({
                   ...state,
                   aboutOpen: false,
+                  timerPaused: false
                }))}   
             >
                <Image
@@ -35,10 +36,12 @@ const Title = ({ aboutOpen, setAboutOpen }) => {
             <h1 
                className="name-top"
                onClick={() => {
+                  handleTimer(null, null, false)
                   setLeo(state => ({
                      ...state,
                      aboutOpen: true,
-                     infoOpen: state.infoOpen ? false : false
+                     infoOpen: state.infoOpen ? false : false,
+                     timerPaused: true
                   }))
                   randomAudio()
                }}

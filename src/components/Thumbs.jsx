@@ -4,8 +4,7 @@ import { LeoContext } from "@/providers/LeoProvider"
 import Thumb from "./Thumb"
 
 const Thumbs = ({ thumbs }) => {
-    const [leo, setLeo] = useContext(LeoContext)
-    console.log(leo.currentTitleWidth)
+    const [leo, setLeo, handleTimer] = useContext(LeoContext)
 
     return (
         <div 
