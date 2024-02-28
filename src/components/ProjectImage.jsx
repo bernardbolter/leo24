@@ -4,10 +4,17 @@ import Image from "next/image"
 import ReactPlayer from "react-player"
 
 const ProjectImage = ({ image, index }) => {
-    const [leo, setLeo] = useContext(LeoContext)
+    const [leo, setLeo, handleTimer] = useContext(LeoContext)
     const [playing, setPlaying] = useState(true)
-    // console.log(leo)
     const videoRef = useRef(null)
+    const [videoLoaded, setVideoLoaded] = useState(false)
+
+    useEffect(() => {
+        // console.log(videoLoaded, index)
+        if (leo.currentImageIndex === index) {
+            console.log(videoLoaded, index)
+        }
+    }, [videoLoaded, leo.currentImageIndex, index])
 
     useEffect(() => {
         // console.log(videoRef.current)
@@ -26,7 +33,7 @@ const ProjectImage = ({ image, index }) => {
                 setPlaying(true)
             }
         }
-    }, [leo.timerPaused, leo.currentIndex, leo.restartVideo])
+    }, [leo.timerPaused, leo.restartVideo])
 
     return (
         <div className="project-image">
@@ -35,6 +42,9 @@ const ProjectImage = ({ image, index }) => {
                     src={image.image.url}
                     alt="portfolio image"
                     fill
+                    priority={index === ( 0 || 1 ) ? true : false}
+                    placeholder="blur"
+                    blurDataURL={image.image.sizes.thumbnail}
                 />
             ) : (
                 <ReactPlayer
@@ -47,6 +57,7 @@ const ProjectImage = ({ image, index }) => {
                     muted={true}
                     playing={playing}
                     loop
+                    onReady={() => setVideoLoaded(true)}
                 />
             )}
         </div>

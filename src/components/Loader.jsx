@@ -7,14 +7,13 @@ const Loader = () => {
             <div className="loader-logo">
                 <Image
                     src={logoGif}
-                    width={100}
-                    height={100}
+                    width={39}
+                    height={39}
                     alt="logo"
+                    priority
                 />
             </div>
-            <h1 className="loader-name">Leonhard Laupichler</h1>
-
-           
+            {/* <h1 className="loader-name">Leonhard Laupichler</h1> */}
         </div>
     )
 }

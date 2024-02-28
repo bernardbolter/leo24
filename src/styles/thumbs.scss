@@ -1,18 +1,21 @@
 .thumbs-container {
     position: fixed;
     z-index: 301;
-    top: 10px;
-    left: 200px;
-    display: flex;
+    top: 54px;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
+
+    @media screen and (min-width: $breakpoint) {
+        top: 10px;
+    }
 }
 
 .project-thumb {
     width: 35px;
     height: 35px;
-    margin:  5px 0 0 0;
+    margin:  0 7px 5px 0;
     transform: scale(1);
     transition: all .2s ease-in-out;
     cursor: pointer;

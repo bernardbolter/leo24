@@ -9,9 +9,13 @@ import ProjectImages from "./ProjectImages"
 import ProjectNav from "./ProjectNav"
 
 import Loader from "./Loader"
+import ProjectLoader from "./ProjectLoader"
 
 const DesktopProject = () => {
     const [leo, setLeo, handleTimer] = useContext(LeoContext)
+    const [projectLoaded, setProjectLoaded] = useState(false)
+    const [imagesLoaded, setImagesLoaded] = useState(false)
+    const [lastProjectId, setLastProjectId] = useState(0)
 
     useEffect(() => {
         var thisID = leo.currentID === 0 ? leo.desktopProjects[0].id : leo.currentID
@@ -26,15 +30,29 @@ const DesktopProject = () => {
 
     useEffect(() => {
         // console.log(leo.currentProject)
-        Object.keys(leo.currentProject).length !== 0 && (
-                handleTimer(null, null, false),
-                handleTimer(0, parseInt(leo.currentProject.imageArray[0].video_length.concat("000")), true)
-            )
-    }, [leo.currentProject])
+        if (Object.keys(leo.currentProject).length !== 0) {
+            
+            // console.log("before project loaded")
+            if (lastProjectId !== leo.currentProject.id) {
+                setImagesLoaded(false)
+            }
+            handleTimer(null, false)
+            setLeo(state => ({ ...state, timerPaused: true }))
+            setTimeout(() => {
+                setImagesLoaded(true)
+                handleTimer(0, true)
+                setLeo(state => ({ ...state, timerPaused: false }))
+            }, 1000)
+            setProjectLoaded(true)
+            setLastProjectId(leo.currentProject.id)
+        } else {
+            setProjectLoaded(false)
+        }
+    }, [leo.currentProject, leo.loadedImages])
 
     return (
         <>
-            {Object.keys(leo.currentProject).length === 0 ? (
+            {!projectLoaded ? (
                 <Loader />
             ) : (
                 <AnimatePresence>
@@ -42,12 +60,14 @@ const DesktopProject = () => {
                         className="project-container"
                         inital={{ left: '100%'}}
                         animate={{ left: '0%' }}
+                        exit={{ left: '-100%' }}
                         key={leo.currentProject.id}
                     >
                         <About />
-                        {Object.keys(leo.currentProject).length !== 0 && <ProjectInfo project={leo.currentProject} />}
-                        {Object.keys(leo.currentProject).length !== 0 && <Thumbs thumbs={leo.currentProject.imageArray} />}
-                        {Object.keys(leo.currentProject).length !== 0 && <ProjectImages images={leo.currentProject.imageArray} />}
+                        <ProjectInfo project={leo.currentProject} />
+                        {!imagesLoaded && <ProjectLoader image={leo.currentProject.acf.loading_image_landscape.sizes.medium} title={leo.currentProject.title.rendered}/>}
+                        <Thumbs thumbs={leo.currentProject.imageArray} />
+                        <ProjectImages images={leo.currentProject.imageArray} />
                         <ProjectNav />
                     </motion.div>
                 </AnimatePresence>

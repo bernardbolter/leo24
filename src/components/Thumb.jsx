@@ -23,6 +23,7 @@ const Thumb = ({ thumb, index }) => {
             })
         }
         if (index === leo.currentImageIndex) {
+            // console.log('thumb same')
             controls.set({
                 maskPosition: '100% 100%'
             })
@@ -32,11 +33,11 @@ const Thumb = ({ thumb, index }) => {
             })
             setLeo(state => ({ ...state, currentImageLength: parseInt(thumb.video_length.concat("000"))}))
         }
-        if (leo.aboutOpen || leo.infoOpen) {
+        if (leo.timerPaused) {
             controls.stop()
         }
 
-    }, [index, leo.currentImageIndex, leo.aboutOpen, leo.infoOpen])
+    }, [index, leo.currentImageIndex, leo.timerPaused])
 
     return (
         <section 
@@ -46,8 +47,8 @@ const Thumb = ({ thumb, index }) => {
                 // console.log(leo.timerPaused)
                 if (!leo.timerPaused) {
                     console.log("in current thumb: ", thumb.video_length)
-                    handleTimer(null, null, false)
-                    handleTimer(index, parseInt(thumb.video_length.concat("000")), true)
+                    handleTimer(null, false)
+                    handleTimer(index, true)
                     setLeo(state => ({ ...state, currentImageIndex: index, restartVideo: true }))
                     setTimeout(() => {
                         setLeo(state => ({ ...state, restartVideo: false }))

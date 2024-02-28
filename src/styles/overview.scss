@@ -13,6 +13,8 @@
     grid-auto-flow: dense;
     gap: 2px;
     border: 2px solid $background;
+    opacity: 0;
+    transition: opacity .5s ease-in-out;
 
     @media screen and (min-width: $breakpoint) {
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -25,9 +27,14 @@
     }
 }
 
-.overviews-container video.poster {
-    filter: blur(10px);
+.overviews-container-visible {
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
 }
+
+// .overviews-container video.poster {
+//     filter: blur(10px);
+// }
 
 
 .landscape {
@@ -87,22 +94,6 @@
         }
     }
 }
-
-.post-container .overview-tooltip {
-    visibility: hidden;
-    width: 120px;
-    background: $background;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3px 7px;
-    color: $nav-back;
-    position: absolute;
-    z-index: 2001;
-    transition: all .3s ease-in-out;
-}
-
-.post-container:hover .overview-tooltip {
-    visibility: visible;
-    transition: all .3s ease-in-out;
+.react-tooltip-arrow {
+    display: none;
 }

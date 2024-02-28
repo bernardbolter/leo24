@@ -11,6 +11,20 @@
     overflow: hidden;
 }
 
+// .project-container {
+//     position: fixed;
+//     width: 100%;
+//     height: 100vh;
+//     z-index: 1;
+//     top: 0;
+//     left: 80%;
+//     margin: 0;
+//     padding: 0;
+//     background: $background;
+//     overflow: hidden;
+//     transform: perspective(200px) rotateY(15deg) translateZ(-150px);
+// }
+
 .project-images {
     display: flex;
     flex-direction: row;

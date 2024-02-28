@@ -3,7 +3,7 @@ import { LeoContext } from "@/providers/LeoProvider"
 import Image from "next/image"
 
 const ProjectNav = () => {
-    const [leo, setLeo, handleTimer] = useContext(LeoContext)
+    const [leo, setLeo, handleTimer, prevProject, nextProject] = useContext(LeoContext)
     const [leftHover, setLeftHover] = useState(false)
     const [rightHover, setRightHover] = useState(false)
 
@@ -13,7 +13,17 @@ const ProjectNav = () => {
                 className={!leo.timerPaused ? "project-nav-left project-nav-left-cursor" : "project-nav-left"}
                 onClick={() => {
                     if (!leo.timerPaused) {
-                        console.log("left")
+                        if (leo.currentImageIndex === 0) {
+                            prevProject()
+                        } else {
+                            console.log("left")
+                            handleTimer(null, false)
+                            setLeo(state => ({ ...state, currentImageIndex: state.currentImageIndex -1, restartVideo: true }))
+                            setTimeout(() => {
+                                setLeo(state => ({ ...state, restartVideo: false }))
+                            }, 100)
+                            handleTimer(leo.currentImageIndex - 1, true)
+                        }
                     }
                 }}
                 onMouseOver={() => setLeftHover(true)} 
@@ -32,7 +42,17 @@ const ProjectNav = () => {
                 className={!leo.timerPaused ? "project-nav-right project-nav-right-cursor" : "project-nav-right"}
                 onClick={() => {
                     if (!leo.timerPaused) {
-                        console.log("right")
+                        if (leo.currentImageIndex === leo.currentProject.imageArray.length - 1) {
+                            nextProject()
+                        } else {
+                            console.log("right")
+                            handleTimer(null, false)
+                            setLeo(state => ({ ...state, currentImageIndex: state.currentImageIndex + 1, restartVideo: true }))
+                            setTimeout(() => {
+                                setLeo(state => ({ ...state, restartVideo: false }))
+                            }, 100)
+                            handleTimer(leo.currentImageIndex + 1, true)
+                        }
                     }
                 }}
                 onMouseOver={() => setRightHover(true)}

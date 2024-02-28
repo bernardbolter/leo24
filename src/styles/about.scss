@@ -7,7 +7,7 @@
     border-radius: 20px;
     color: white;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 12px;
     margin: 0;
     padding: 10px 14px;
     white-space: nowrap;
@@ -21,11 +21,15 @@
         transform: scale(1.05);
         transition: all .2s ease-in-out; 
     }
+
+    @media screen and (min-width: 850px) {
+        font-size: 15px;
+    }
 }
 
 .name-close {
-    width: 39px;
-    height: 39px;
+    width: 34px;
+    height: 34px;
     background: $info-back;
     border-radius: 50%;
     display: flex;
@@ -41,7 +45,12 @@
     top: 10px;
     left: 10px;
     transform: scale(1);
-        transition: all .2s ease-in-out; 
+    transition: all .2s ease-in-out;
+    
+    @media screen and (min-width: 850px) {
+        width: 39px;
+        height: 39px;
+    }
 
     &:hover {
         transform: scale(1.05);
@@ -62,7 +71,7 @@
     overflow: scroll;
     background: $info-back;
     position: fixed;
-    top: 58px;
+    top: 53px;
     left: 10px;
     border-radius: 15px;
     max-width: 400px;
@@ -80,23 +89,36 @@
     @media screen and (min-width: $breakpoint) {
         width: 400px;
         left: 10px;
-    } 
+    }
+
+    @media screen and (min-width: 850px) {
+        top: 58px;
+    }
 
     h2 {
         color: white;
-        font-size: 13px;
+        font-size: 12px;
         line-height: 1.4em;
         margin: 10px 10px 0;
         padding: 0;
         font-weight: 400;
+
+        @media screen and (min-width: 850px) {
+            font-size: 13px;
+        }
     }
 
     p {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 400px;
         line-height: 1.4em;
         color: #bbb;
-        margin: 0 0 25px 10px;
+        margin: 0 0 20px 10px;
+
+        @media screen and (min-width: 850px) {
+            font-size: 13px;
+            margin: 0 0 25px 10px;
+        }
     }
 
     .imprint {
@@ -140,9 +162,13 @@
 
 .services-container p {
     color: white;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     margin: 0 0 0 10px;
+
+    @media screen and (min-width: 850px) {
+        font-size: 13px;
+    }
 }
 
 .services-container br {
@@ -155,9 +181,13 @@
 
 .clients-container p {
     color: white;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     margin: 0 0 0 10px;
+
+    @media screen and (min-width: 850px) {
+        font-size: 13px;
+    }
 }
 
 .clients-container br {

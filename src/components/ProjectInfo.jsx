@@ -1,5 +1,6 @@
-import { useContext, useMemo, useRef, useEffect } from "react"
+import { useContext, useMemo, useRef, useEffect, useState } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
+import { useWindowSize } from "@/helpers/useWindowSize"
 import DOMPurify from "dompurify"
 import Image from "next/image"
 
@@ -49,9 +50,11 @@ const ProjectInfo = ({ project }) => {
     const [leo, setLeo] = useContext(LeoContext)
     const { acf } = project
     const projectTitleRef = useRef(null)
+    const [projectTitleLeft, setProjectTitleLeft] = useState(0)
+    const size = useWindowSize()
 
     useEffect(() => {
-        console.log(projectTitleRef.current.clientWidth)
+        // console.log(projectTitleRef.current.clientWidth)
         setLeo(state => ({ ...state, currentTitleWidth: projectTitleRef.current.clientWidth }))
     }, [projectTitleRef, leo.currentProject])
 
@@ -63,14 +66,30 @@ const ProjectInfo = ({ project }) => {
         return DOMPurify.sanitize(acf.handle)
     }, [acf])
 
+    useEffect(() => {
+        if ( size.width < 850 ) {
+            console.log("title mobile")
+            if (leo.aboutOpen) {
+
+                setProjectTitleLeft(50)
+            } else {
+                setProjectTitleLeft(155)
+            }
+        } else {
+            if (leo.aboutOpen) {
+                setProjectTitleLeft(59)
+            } else {
+                setProjectTitleLeft(183)
+            }
+        }
+    }, [size.width, leo.aboutOpen])
+
     return (
         <section className="project-info-wrapper">
             {leo.infoOpen ? (
                 <div 
                     className="info-close"
-                    style={{
-                        left: leo.aboutOpen ? 59 : 183
-                    }}
+                    style={{ left: projectTitleLeft }}
                     onClick={() => setLeo(state => ({
                         ...state,
                         infoOpen: false,
@@ -88,9 +107,7 @@ const ProjectInfo = ({ project }) => {
                 <h1 
                     className="project-title"
                     ref={projectTitleRef}
-                    style={{
-                        left: leo.aboutOpen ? 59 : 183
-                    }}
+                    style={{ left: projectTitleLeft }}
                     onClick={() => setLeo( state => ({
                         ...state,
                         infoOpen: true,
