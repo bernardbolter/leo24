@@ -18,10 +18,18 @@ const MobileProject = () => {
     // console.log("mobile p: ",leo.mobileProjects)
     
     useEffect(() => {
-        var thisID = leo.currentID === 0 ? leo.mobileProjects[0].id : leo.currentID
-        var nextProject = leo.mobileProjects.filter(project => project.id === thisID)
+        var nextProject = []
+        if (leo.isLowPower) {
+            const filteredMobile = leo.mobileProjects.filter(project => project.acf.overview_size === 'large-square' || project.acf.overview_size === 'landscape' || project.acf.overview_size === 'portrait')
+            nextProject = filteredMobile[Math.floor(Math.random()*filteredMobile.length)];
+        } else {
+            var thisID = leo.currentID === 0 ? leo.mobileProjects[0].id : leo.currentID
+            var nextProjectArray = leo.mobileProjects.filter(project => project.id === thisID)
+            nextProject = nextProjectArray[0]
+        }
+        
         setLeo(state => ({ ...state, 
-            currentProject: nextProject[0],
+            currentProject: nextProject,
             currentImageIndex: 0,
             currentImageLength: 0,
             timerPaused: false

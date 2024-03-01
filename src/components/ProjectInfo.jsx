@@ -76,6 +76,7 @@ const ProjectInfo = ({ project }) => {
                 setProjectTitleLeft(155)
             }
         } else {
+            console.log("title desktop")
             if (leo.aboutOpen) {
                 setProjectTitleLeft(59)
             } else {

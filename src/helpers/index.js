@@ -84,3 +84,21 @@ export const arrangeDesktopPosts = posts => {
 
     return desktopPosts
 }
+
+export const prevProject = (currentId, projects) => {
+    if (currentId === projects[0].id) {
+        return projects[projects.length - 1]
+    } else {
+        const currentImageIndex = projects.findIndex(project => project.id === currentId)
+        return projects[currentImageIndex - 1]
+    }
+}
+
+export const nextProject = (currentId, projects) => {
+    if (currentId === projects[projects.length].id) {
+        return projects[0]
+    } else {
+        const currentProjectIndex = projects.findIndex(project => project.id === currentId)
+        return projects[currentProjectIndex + 1]
+    }
+}

@@ -11,6 +11,19 @@
     overflow: hidden;
 }
 
+.project-wrapper {
+    height: 100vh;
+}
+
+.project-images-wrapper {
+    height: 100vh;
+}
+
+.project-images-wrapper-show {
+    visibility: visible;
+    transition: all 2s ease-in;
+}
+
 // .project-container {
 //     position: fixed;
 //     width: 100%;

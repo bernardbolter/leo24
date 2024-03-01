@@ -3,40 +3,39 @@ import { LeoContext } from "@/providers/LeoProvider"
 import Image from "next/image"
 import { motion, useAnimationControls } from 'framer-motion'
 
-import { useWindowSize } from "@/helpers/useWindowSize"
-
 const Thumb = ({ thumb, index }) => {
     const [leo, setLeo, handleTimer] = useContext(LeoContext)
     const controls = useAnimationControls()
 
     useEffect(() => {
-        if (index < leo.currentImageIndex) {
-            controls.start({
-                maskPosition: '0% 0%',
-                transition: { duration: 0 }
-            })
-        }
-        if (index > leo.currentImageIndex) {
-            controls.start({
-                maskPosition: '100% 100%',
-                transition: { duration: 0}
-            })
-        }
-        if (index === leo.currentImageIndex) {
-            // console.log('thumb same')
-            controls.set({
-                maskPosition: '100% 100%'
-            })
-            controls.start({
-                maskPosition: '0% 0%',
-                transition: { duration: parseInt(thumb.video_length) }
-            })
-            setLeo(state => ({ ...state, currentImageLength: parseInt(thumb.video_length.concat("000"))}))
-        }
+        console.log("clock: ", leo.timerPaused)
         if (leo.timerPaused) {
             controls.stop()
+        } else {
+            if (index < leo.currentImageIndex) {
+                controls.start({
+                    maskPosition: '0% 0%',
+                    transition: { duration: 0 }
+                })
+            }
+            if (index > leo.currentImageIndex) {
+                controls.start({
+                    maskPosition: '100% 100%',
+                    transition: { duration: 0}
+                })
+            }
+            if (index === leo.currentImageIndex) {
+                console.log('thumb start overlay')
+                controls.set({
+                    maskPosition: '100% 100%'
+                })
+                controls.start({
+                    maskPosition: '0% 0%',
+                    transition: { duration: parseInt(thumb.video_length) }
+                })
+                setLeo(state => ({ ...state, currentImageLength: parseInt(thumb.video_length.concat("000"))}))
+            }
         }
-
     }, [index, leo.currentImageIndex, leo.timerPaused])
 
     return (

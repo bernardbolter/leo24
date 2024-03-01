@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
+import { usePathname, useSearchParams } from "next/navigation"
 
 import About from "./About"
 import ProjectInfo from "./ProjectInfo"
@@ -13,61 +14,82 @@ import ProjectLoader from "./ProjectLoader"
 
 const DesktopProject = () => {
     const [leo, setLeo, handleTimer] = useContext(LeoContext)
-    const [projectLoaded, setProjectLoaded] = useState(false)
-    const [imagesLoaded, setImagesLoaded] = useState(false)
-    const [lastProjectId, setLastProjectId] = useState(0)
+    const [projectLoadCheck, setProjectLoadCheck] = useState(false)
+    const [imagesCount, setImagesCount] = useState([])
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+
+    console.log("desk tp: ", leo.timerPaused)
 
     useEffect(() => {
-        var thisID = leo.currentID === 0 ? leo.desktopProjects[0].id : leo.currentID
-        var nextProject = leo.desktopProjects.filter(project => project.id === thisID)
+        setLeo(state => ({ ...state, imagesLoaded: false }))
+        setProjectLoadCheck(false)
+        setImagesCount([])
+        // console.log(pathname, searchParams)
+    },[leo.currentProject, pathname, searchParams])
+
+    // decide which project to view if coming from overviews, or chose first project
+    useEffect(() => {
+        var thisId = leo.currentID === 0 ? leo.desktopProjects[0].id : leo.currentID
+        var nextProjectArray = leo.desktopProjects.filter(project => project.id === thisId)
         setLeo(state => ({ ...state, 
-            currentProject: nextProject[0],
+            currentProject: nextProjectArray[0],
             currentImageIndex: 0,
-            currentImageLength: 0,
-            timerPaused: false
+            currentImageLength: 0
         }))
     }, [leo.currentID])
 
     useEffect(() => {
-        // console.log(leo.currentProject)
-        if (Object.keys(leo.currentProject).length !== 0) {
-            
-            // console.log("before project loaded")
-            if (lastProjectId !== leo.currentProject.id) {
-                setImagesLoaded(false)
+        // console.log(imagesCount.length, leo.projectLoaded)
+
+        if (!leo.projectLoaded && Object.keys(leo.currentProject).length !== 0) {
+            if (imagesCount.length === leo.currentProject.imageArray.length) {
+                setLeo(state => ({ ...state, projectLoaded: true }))
+                setImagesCount([])
+            } else {
+                if (!projectLoadCheck) {
+                    setTimeout(() => {
+                        if (!leo.projectLoaded) {
+                            setLeo(state => ({ ...state, projectLoaded: true }))
+                            setImagesCount([])
+                        }
+                    }, 3000)
+                }
+                setProjectLoadCheck(true)
+                setLeo(state => ({ ...state, projectLoaded: false }))
             }
-            handleTimer(null, false)
-            setLeo(state => ({ ...state, timerPaused: true }))
-            setTimeout(() => {
-                setImagesLoaded(true)
-                handleTimer(0, true)
-                setLeo(state => ({ ...state, timerPaused: false }))
-            }, 1000)
-            setProjectLoaded(true)
-            setLastProjectId(leo.currentProject.id)
-        } else {
-            setProjectLoaded(false)
         }
-    }, [leo.currentProject, leo.loadedImages])
+    }, [imagesCount, leo.projectLoaded, leo.currentProject])
 
     return (
         <>
-            {!projectLoaded ? (
+            {Object.keys(leo.currentProject).length === 0 ? (
                 <Loader />
             ) : (
                 <AnimatePresence>
-                    <motion.div 
-                        className="project-container"
-                        inital={{ left: '100%'}}
-                        animate={{ left: '0%' }}
-                        exit={{ left: '-100%' }}
-                        key={leo.currentProject.id}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: Object.keys(leo.currentProject).length === 0 ? 0 : 1 }}
+                        transition={{ duration: .2 }}
+                        className="project-wrapper"
                     >
                         <About />
                         <ProjectInfo project={leo.currentProject} />
-                        {!imagesLoaded && <ProjectLoader image={leo.currentProject.acf.loading_image_landscape.sizes.medium} title={leo.currentProject.title.rendered}/>}
+                        {!leo.projectLoaded && <ProjectLoader image={leo.currentProject.acf.loading_image_landscape.sizes.medium} title={leo.currentProject.title.rendered} />}
                         <Thumbs thumbs={leo.currentProject.imageArray} />
-                        <ProjectImages images={leo.currentProject.imageArray} />
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: leo.projectLoaded ? 1 : 0}}
+                            transition={{ duration: .3 }}
+                            className="'project-images-wrapper"
+                        >
+                            <ProjectImages 
+                                images={leo.currentProject.imageArray} 
+                                isDesktop={true} 
+                                setImagesCount={setImagesCount}
+                                title={leo.currentProject.title.rendered}
+                            />
+                        </motion.div>
                         <ProjectNav />
                     </motion.div>
                 </AnimatePresence>

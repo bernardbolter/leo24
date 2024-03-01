@@ -10,11 +10,13 @@ const Impressum = () => {
       <div className="nav-logo">
         <Image
           src={logoGif}
-          width={100}
-          height={100}
+          width={39}
+          height={39}
         />
       </div>
-      <h1 className="nav-name">Leonhard Laupichler Impressum</h1>
+      <div class="imp-content">
+        
+      </div>
     </section>
   )
 }

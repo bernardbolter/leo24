@@ -1,48 +1,61 @@
 import { useState, useContext, useEffect } from 'react'
 import { LeoContext } from '@/providers/LeoProvider'
-import { useWindowSize } from '@/helpers/useWindowSize'
+import { usePathname } from 'next/navigation'
 
 import About from "./About"
 import Overview from "./Overview"
 import Loader from './Loader'
 
 const DesktopOverviews = ({ projects }) => {
-    // console.log(projects)
     const [leo, setLeo] = useContext(LeoContext)
-    const [overviewsLoaded, setOverviewsLoaded] = useState(false)
     const [showAbout, setShowAbout] = useState(false)
-    const size = useWindowSize()
+    const [loadCheck, setLoadCheck] = useState(false)
+    const [overviewsCount, setOverviewsCount] = useState([])
 
     useEffect(() => {
-        console.log(leo.loadedOverviews)
-        // console.log(projects.length)
-        if (projects.length === leo.loadedOverviews) {
-            setOverviewsLoaded(true)
-            setLeo(state => ({ ...state, loadedOverviews: 0 }))
-            setTimeout(() => {
-                setShowAbout(true)
-            }, 1000)
+        setLeo(state => ({ ...state, overviewsLoaded: false }))
+        setLoadCheck(false)
+    }, [])
+
+    useEffect(() => {
+        if (!leo.overviewsLoaded) {
+            if (overviewsCount.length === projects.length) {
+                setLeo(state => ({ ...state, overviewsLoaded: true }))
+                setOverviewsCount([])
+                setTimeout(() => {
+                    setShowAbout(true)
+                }, 750)
+            } else {
+                if (!loadCheck) {
+                    setTimeout(() => {
+                        if (!leo.overviewsLoaded) {
+                            setLeo(state => ({ ...state, overviewsLoaded: true }))
+                            setOverviewsCount([])
+                            setTimeout(() => {
+                                setShowAbout(true)
+                            }, 750)
+                        }
+                    }, 3000)
+                }
+                setLoadCheck(true)
+            }
         }
-    }, [leo.loadedOverviews, projects])
-
-    useEffect(() => {
-
-    })
+    }, [projects, overviewsCount, leo.overviewsLoaded])
 
     return (
         <div className="overview-container">
-            {!overviewsLoaded && <Loader />} 
+            {!leo.overviewsLoaded && <Loader />} 
             {showAbout && <About />}
-            <div className={overviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
+            <div className={leo.overviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
                 {projects.map((project, i) => {
-                    // console.log(i, project.overview)
                         return (<Overview 
                             overview={project.overview} 
                             index={i}
                             id={project.id}
                             title={project.title.rendered}
-                            key={project.id}
                             isDesktop={true}
+                            setOverviewsCount={setOverviewsCount}
+                            key={project.id}
                         />)
                     })}
             </div>

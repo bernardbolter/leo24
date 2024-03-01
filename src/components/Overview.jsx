@@ -5,7 +5,14 @@ import Image from 'next/image'
 import ReactPlayer from 'react-player'
 import { Tooltip } from 'react-tooltip'
 
-const Overview = ({ overview, index, id, title, isDesktop }) => {
+const Overview = ({ 
+    overview, 
+    index, 
+    id, 
+    title, 
+    isDesktop,
+    setOverviewsCount 
+}) => {
     const {
         overview_size,
         overview_image,
@@ -59,9 +66,10 @@ const Overview = ({ overview, index, id, title, isDesktop }) => {
                     src={'https://www.tlbx.app/200-300.svg'}
                     alt={`thumbnail from the ${title} project`}
                     fill
+                    priority
                     onLoad={() => {
                         // console.log(`svg ${index} loaded`)
-                        setLeo(state => ({ ...state, loadedOverviews: state.loadedOverviews + 1 }))
+                        setOverviewsCount(overviewsCount => [...overviewsCount, index])
                     }}
                 />
             ) : overview_image ? (
@@ -69,10 +77,11 @@ const Overview = ({ overview, index, id, title, isDesktop }) => {
                     src={isDesktop ? overview_image.sizes.large : overview_image.sizes.medium_large}
                     alt={`thumbnail from the ${title} project`}
                     fill
-                    style={{ background: '#333' }}
+                    priority
+                    loading="eager"
                     onLoad={() => {
                         // console.log(`image ${index} loaded`)
-                        setLeo(state => ({ ...state, loadedOverviews: state.loadedOverviews + 1 }))
+                        setOverviewsCount(overviewsCount => [...overviewsCount, index])
                     }}
                 />
             ) : (
@@ -87,9 +96,9 @@ const Overview = ({ overview, index, id, title, isDesktop }) => {
                     playing={playing}
                     loop
                     onReady={() => {
-                        setVideoLoaded(true)
                         // console.log(`video ${index} loaded`)
-                        setLeo(state => ({ ...state, loadedOverviews: state.loadedOverviews + 1 }))
+                        setVideoLoaded(true)
+                        setOverviewsCount(overviewsCount => [...overviewsCount, index])
                     }}
                 />
             )}

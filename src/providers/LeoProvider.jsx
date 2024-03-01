@@ -3,6 +3,7 @@
 import React, { useState, createContext, useEffect, useRef } from 'react'
 import { arrangeDesktopPosts, arrangeMobilePosts } from '@/helpers'
 import { useWindowSize } from '@/helpers/useWindowSize'
+import { prevProject, nextProject} from '@/helpers'
 
 export const LeoContext = createContext()
 
@@ -27,98 +28,54 @@ const LeoProvider = ({ children }) => {
         currentTitleWidth: 0,
         currentImageIndex: 0,
         currentImageLength: 0,
-        timerPaused: false,
+        timerPaused: true,
         restartVideo: false,
-        loadedImages: 0,
-        allImagesLoaded: false,
-        loadedOverviews: 0,
-        allOverviews: false
+        imagesCount: 0,
+        projectLoaded: false,
+        overviewsCount: 0,
+        overviewsLoaded: false
     })
 
-    const handleTimer = (index, start) => {
-        // console.log("index: ", index)
-        // console.log("cur ind: ", leo.currentImageIndex)
-        // console.log("length: ", length)
-        // console.log("start: ", start)
+    const handleTimer = (
+            currentId,
+            projects,
+            imageIndex, 
+            imageArray, 
+            length, 
+            start
+        ) => {
+        console.log("index: ", index)
+        console.log("cur ind: ", leo.currentImageIndex)
+        console.log("length: ", length)
+        console.log("start: ", start)
 
-        if (start) {
-            // console.log("cur ind: ", leo.currentImageIndex)
-            var thisLength = parseInt(leo.currentProject.imageArray[index].video_length.concat("000"))
-            var nextIndex = index + 1
-            // var nextLength = parseInt(leo.currentProject.imageArray[index + 1].video_length.concat("000"))
-            // console.log("next i: ", nextIndex)
-            // console.log("next l: ", nextLength)
-            timer.current = setTimeout(() => {
-                // console.log('in the timeout')
-                // console.log(index)
-                // console.log(leo.currentProject.imageArray.length - 1)
-                if (index === leo.currentProject.imageArray.length - 1) {
-                    console.log('on to the next')
-                    nextProject()
-                } else {
-                    handleTimer(nextIndex, true)
-                    setLeo(state => ({ ...state, currentImageIndex: nextIndex, restartVideo: true }))
-                    setTimeout(() => {
-                        setLeo(state => ({ ...state, restartVideo: false }))
-                    }, 100)
-                }
-            }, thisLength)
-        } else {
-            // console.log("time to stop")
-            clearTimeout(timer.current) 
-        }
-    }
-
-    const prevProject = () => {
-        let prevProject = {}
-        handleTimer(null, false)
-        if (size.width < 850) {
-            if (leo.currentProject.id === leo.mobileProjects[0].id) {
-                prevProject = leo.mobileProjects[leo.mobileProjects.length - 1]
-                setLeo(state => ({ ...state, currentProject: prevProject, currentImageIndex: 0 }))
-            } else {
-                const currentProjectsIndex = leo.mobileProjects.findIndex(project => project.id === leo.currentProject.id)
-                const nextProjectId = leo.mobileProjects[currentProjectsIndex - 1].id
-                prevProject = leo.mobileProjects.find(project => project.id === nextProjectId)
-                setLeo(state => ({ ...state, currentProject: prevProject, currentImageIndex: 0 }))
-            }
-        } else {
-            if (leo.currentProject.id === leo.desktopProjects[0].id) {
-                prevProject = leo.desktopProjects[leo.desktopProjects.length - 1]
-                setLeo(state => ({ ...state, currentProject: prevProject, currentImageIndex: 0 }))
-            } else {
-                const currentProjectsIndex = leo.desktopProjects.findIndex(project => project.id === leo.currentProject.id)
-                const nextProjectId = leo.desktopProjects[currentProjectsIndex - 1].id
-                prevProject = leo.desktopProjects.find(project => project.id === nextProjectId)
-                setLeo(state => ({ ...state, currentProject: prevProject, currentImageIndex: 0 }))
-            }
-        }
-    }
-
-    const nextProject = () => {
-        let nextProject = {}
-        handleTimer(null, false)
-        if (size.width < 850) {
-            if (leo.currentProject.id === leo.mobileProjects[leo.mobileProjects.length -1].id) {
-                nextProject = leo.mobileProjects[0]
-                setLeo(state => ({ ...state, currentProject: nextProject, currentImageIndex: 0 }))
-            } else {
-                const currentProjectsIndex = leo.mobileProjects.findIndex(project => project.id === leo.currentProject.id)
-                const nextProjectId = leo.mobileProjects[currentProjectsIndex + 1].id
-                nextProject = leo.mobileProjects.find(project => project.id === nextProjectId)
-                setLeo(state => ({ ...state, currentProject: nextProject, currentImageIndex: 0 }))
-            }
-        } else {
-            if (leo.currentProject.id === leo.desktopProjects[leo.desktopProjects.length -1].id) {
-                nextProject = leo.desktopProjects[0]
-                setLeo(state => ({ ...state, currentProject: nextProject, currentImageIndex: 0 }))
-            } else {
-                const currentProjectsIndex = leo.desktopProjects.findIndex(project => project.id === leo.currentProject.id)
-                const nextProjectId = leo.desktopProjects[currentProjectsIndex + 1].id
-                nextProject = leo.desktopProjects.find(project => project.id === nextProjectId)
-                setLeo(state => ({ ...state, currentProject: nextProject, currentImageIndex: 0 }))
-            }
-        }
+        // if (start) {
+        //     // console.log("cur ind: ", leo.currentImageIndex)
+        //     var thisLength = parseInt(length.concat("000"))
+        //     var nextIndex = imageIndex + 1
+        //     // var nextLength = parseInt(leo.currentProject.imageArray[index + 1].video_length.concat("000"))
+        //     // console.log("next i: ", nextIndex)
+        //     // console.log("next l: ", nextLength)
+        //     timer.current = setTimeout(() => {
+        //         // console.log('in the timeout')
+        //         // console.log(index)
+        //         // console.log(leo.currentProject.imageArray.length - 1)
+        //         if (imageIndex === imageArray.length - 1) {
+        //             console.log('on to the next')
+        //             var next = nextProject(currentId, projects)
+        //             setLeo(state => ({ ...state, currentImag }))
+        //         } else {
+        //             handleTimer(nextIndex, true)
+        //             setLeo(state => ({ ...state, currentImageIndex: nextIndex, restartVideo: true }))
+        //             setTimeout(() => {
+        //                 setLeo(state => ({ ...state, restartVideo: false }))
+        //             }, 100)
+        //         }
+        //     }, thisLength)
+        // } else {
+        //     // console.log("time to stop")
+        //     clearTimeout(timer.current) 
+        // }
     }
     
     useEffect(() => {
@@ -165,7 +122,13 @@ const LeoProvider = ({ children }) => {
     
     return (
         <LeoContext.Provider
-            value={[leo, setLeo, handleTimer, prevProject, nextProject]}
+            value={[
+                leo,
+                setLeo, 
+                handleTimer, 
+                prevProject, 
+                nextProject,
+            ]}
         >
             {children}
         </LeoContext.Provider>
