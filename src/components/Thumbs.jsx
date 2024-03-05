@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
+import { useWindowSize } from '@/helpers/useWindowSize'
 
 import Thumb from "./Thumb"
 
@@ -16,7 +17,7 @@ const Thumbs = ({
 }) => {
     const [leo] = useContext(LeoContext)
     const [showDisplay, setShowDisplay] = useState('flex')
-
+    const size = useWindowSize()
 
     useEffect(() => {
         if (leo.infoOpen || leo.aboutOpen) {
@@ -30,7 +31,8 @@ const Thumbs = ({
         <div 
             className="thumbs-container"
             style={{
-                display: showDisplay
+                display: showDisplay,
+                left: size.width < 850 ? 10 : 175 + leo.currentTitleWidth
             }}    
         >
             <AnimatePresence>

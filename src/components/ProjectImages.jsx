@@ -1,5 +1,3 @@
-import { useContext } from "react"
-import { LeoContext } from "@/providers/LeoProvider"
 import { useWindowSize } from "@/helpers/useWindowSize"
 
 import ProjectImage from "./ProjectImage"
@@ -13,10 +11,8 @@ const ProjectImages = ({
     timerPaused,
     setTimerPaused, 
     clearTimer, 
-    resetTimer,
-    transitionOn
+    resetTimer
 }) => {
-    const [leo, setLeo] = useContext(LeoContext)
     const size = useWindowSize()
 
     return (
@@ -39,7 +35,6 @@ const ProjectImages = ({
                 setTimerPaused={setTimerPaused}
                 clearTimer={clearTimer}
                 resetTimer={resetTimer}
-                transitionOn={transitionOn}
             />)}
         </div>
     )

@@ -6,15 +6,19 @@ const ProjectNav = ({
     images, 
     nextProject,
     clearTimer,
-    resetTimer
+    resetTimer,
+    projectLoaded,
+    setProjectLoaded
 }) => {
     return (
         <div 
             className="project-nav-container"
             onClick={() => {
-                if (!timerPaused) {
+                if (!timerPaused && projectLoaded) {
+                    // console.log("nav hit")
                     if (imageIndex === images.length - 1) {
-                        console.log("nav next p")
+                        // console.log("nav next p")
+                        setProjectLoaded(false)
                         nextProject()
                     } else {
                         setImageIndex(index => index + 1)

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://leonhardlaupichler.com/
+
+# Sitemaps
+Sitemap: https://leonhardlaupichler.com/sitemap.xml

@@ -13,7 +13,6 @@ const ProjectImage = ({
     setTimerPaused,
     clearTimer,
     resetTimer,
-    transitionOn
 }) => {
     const [playing, setPlaying] = useState(true)
     const videoRef = useRef(null)
@@ -56,7 +55,7 @@ const ProjectImage = ({
     }, [videoLoaded])
 
     return (
-        <div className={transitionOn ? "project-image" : "project-image project-image-hide"}>
+        <div className="project-image">
             {!image.image && !image.video ? (
                 <Image
                     src={'https://www.tlbx.app/200-300.svg'}

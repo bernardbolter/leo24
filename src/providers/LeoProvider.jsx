@@ -1,15 +1,13 @@
 "use client"
 
-import React, { useState, createContext, useEffect, useRef } from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 import { arrangeDesktopPosts, arrangeMobilePosts } from '@/helpers'
 import { useWindowSize } from '@/helpers/useWindowSize'
-import { prevProject, nextProject} from '@/helpers'
 
 export const LeoContext = createContext()
 
 const LeoProvider = ({ children }) => {
     const size = useWindowSize()
-    let timer = useRef(null)
     const [leo, setLeo] = useState({
         dataLoaded: false,
         dataError: false,

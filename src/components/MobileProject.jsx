@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
 import useTimeout from "@/helpers/useSetTimeout"
-import Image from "next/image"
 
 import About from "./About"
 import ProjectInfo from "./ProjectInfo"
@@ -11,6 +10,7 @@ import ProjectImages from "./ProjectImages"
 import ProjectNav from "./ProjectNav"
 
 import Loader from "./Loader"
+import ProjectLoader from "./ProjectLoader"
 
 const MobileProject = () => {
     const [leo] = useContext(LeoContext)
@@ -20,9 +20,6 @@ const MobileProject = () => {
     const [currentImageLength, setCurrentImageLength] = useState(5000)
 
     const [projectLoaded, setProjectLoaded] = useState(false)
-    const [transitionOn, setTransitionOn] = useState(false)
-    const [lastPlaceholder, setLastPlaceholder] = useState('https://www.tlbx.app/200-300.svg')
-    const [nextPlaceholder, setNextPlaceholder] = useState('https://www.tlbx.app/200-300.svg')
 
     const [mobileCurrentProject, setMobileCurrentProject] = useState({})
     const [mobileTimerPaused, setMobileTimerPaused] = useState(false)
@@ -49,7 +46,6 @@ const MobileProject = () => {
             var nextProjectArray = leo.mobileProjects.filter(project => project.id === thisID)
             nextProject = nextProjectArray[0]
         }
-        console.log(nextProject)
         setMobileCurrentProject(nextProject)
         setImageIndex(0)
     }, [leo.newProjectId, leo.mobileProjects])
@@ -112,29 +108,9 @@ const MobileProject = () => {
     }, [leo.infoOpen, leo.aboutOpen])
 
     const nextProject = () => {
-        let theLastPlaceholder
-        let theNextPlaceholder
-
         const currentIndex = leo.mobileProjects.findIndex(project => project.id === mobileCurrentProject.id)
-        if (mobileCurrentProject.imageArray[mobileCurrentProject.imageArray.length - 1].image) {
-            theLastPlaceholder = mobileCurrentProject.imageArray[mobileCurrentProject.imageArray.length - 1].image.sizes.medium
-        } else {
-            theLastPlaceholder = mobileCurrentProject.imageArray[mobileCurrentProject.imageArray.length - 1].thumbnail.sizes.medium
-        }
-
-        if (currentIndex === leo.mobileProjects.length -1) {
-            theNextPlaceholder = leo.mobileProjects[0].acf.loading_image_landscape.sizes.medium
-        } else {
-            theNextPlaceholder = leo.mobileProjects[currentIndex + 1].acf.loading_image_landscape.sizes.medium
-        }
-
-         // console.log("t last: ",theLastPlaceholder)
-         setLastPlaceholder(theLastPlaceholder)
-         // console.log(" t next: ", theNextPlaceholder)
-         setNextPlaceholder(theNextPlaceholder)
 
          if (currentIndex === leo.mobileProjects.length - 1) {
-            setTransitionOn(true)
             setMobileTimerPaused(true)
             setTimeout(() => {
                 setProjectLoaded(false)
@@ -143,7 +119,6 @@ const MobileProject = () => {
                 setMobileCurrentProject(leo.mobileProjects[0])
             }, 500)
          } else {
-            setTransitionOn(true)
             setMobileTimerPaused(false)
             setTimeout(() => {
                 setProjectLoaded(false)
@@ -157,7 +132,6 @@ const MobileProject = () => {
     // restart
     useEffect(() => {
         if (projectLoaded) {
-            setTransitionOn(false)
             setTimeout(() => {
                 setMobileTimerPaused(false)
                 resetMobileTimer()
@@ -195,21 +169,9 @@ const MobileProject = () => {
                             key={`${mobileCurrentProject.id}-mobile-thumbs`} 
                         />
                     </motion.div>
-                    <div className={transitionOn ? 'transition-container transition-container-show' : 'transition-container'}>
-                        <Image
-                            src={lastPlaceholder}
-                            alt="last placeholder"
-                            fill
-                            priority
-                            loading="eager"
-                            style={{ objectFit: 'cover'}}
-                        />
-                    </div>
+                    {!projectLoaded && <ProjectLoader image={mobileCurrentProject.acf.loading_image_portrait.sizes.medium} title={mobileCurrentProject.title.rendered} />}
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: projectLoaded ? 1 : 0}}
-                        transition={{ duration: 3 }}
-                        className="'project-images-wrapper"
+                        className="project-images-wrapper"
                         key={`${mobileCurrentProject.id}-mobile-project-wrapper`}
                     >
                         <ProjectImages
@@ -222,7 +184,6 @@ const MobileProject = () => {
                             setTimerPaused={setMobileTimerPaused}
                             clearTimer={clearMobileTimer}
                             resetTimer={resetMobileTimer}
-                            transitionOn={transitionOn}
                             key={`${mobileCurrentProject.id}-mobile-project-images`}
                         />
                     </motion.div>
@@ -235,6 +196,8 @@ const MobileProject = () => {
                         nextProject={nextProject}
                         clearTimer={clearMobileTimer}
                         resetTimer={clearMobileTimer}
+                        projectLoaded={projectLoaded}
+                        setProjectLoaded={setProjectLoaded}
                         key={`${mobileCurrentProject.id}-mobile-project-nav`}
                     />
                 </AnimatePresence>

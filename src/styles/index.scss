@@ -8,7 +8,6 @@
 @import './project-nav.scss';
 @import './thumbs.scss';
 @import './overview.scss';
-@import './projects.scss';
 @import './loader.scss';
 @import './error.scss';
 @import './transition.scss';
@@ -27,6 +26,7 @@ body::-webkit-scrollbar {
 * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+	-webkit-tap-highlight-color: transparent;
 }
 
 img {

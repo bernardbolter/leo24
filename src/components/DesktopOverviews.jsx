@@ -16,7 +16,7 @@ const DesktopOverviews = ({ projects }) => {
 
     // reset overviews on navigation or reload
     useEffect(() => {
-        console.log("reset desktop overviews")
+        // console.log("reset desktop overviews")
         setShowAbout(false)
         setDesktopOverviewsCount([])
         setDesktopOverviewsLoaded(false)
@@ -25,7 +25,7 @@ const DesktopOverviews = ({ projects }) => {
     // check if all videos and images are loaded before revealing
     useEffect(() => {
         if (!desktopOverviewsLoaded) {
-            console.log(desktopOverviewsCount)
+            // console.log(desktopOverviewsCount)
             if (desktopOverviewsCount.length === projects.length) {
                 setDesktopOverviewsLoaded(true)
                 setDesktopOverviewsCount([])

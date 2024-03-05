@@ -8,7 +8,7 @@
     flex-wrap: wrap;
 
     @media screen and (min-width: $breakpoint) {
-        position: relative;
+        position: absolute;
         top: 0;
         height: 39px;
         margin: 0 0 0 10px;

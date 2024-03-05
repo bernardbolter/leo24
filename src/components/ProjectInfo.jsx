@@ -1,6 +1,7 @@
-import { useContext, useMemo } from "react"
+import { useContext, useMemo, useRef, useEffect } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
+import { useWindowSize } from "@/helpers/useWindowSize"
 import DOMPurify from "dompurify"
 import Close from '@/svg/close'
 
@@ -50,6 +51,30 @@ const ProjectInfo = ({ project }) => {
     // console.log(project)
     const [leo, setLeo] = useContext(LeoContext)
     const { acf } = project
+    const titleRef = useRef(null)
+    const size = useWindowSize()
+
+    useEffect(() => {
+        if (titleRef.current !== null) {
+            setLeo(state => ({ ...state, currentTitleWidth: titleRef.current.clientWidth }))
+        }
+    }, [titleRef])
+
+    const infoLeft = useMemo(() => {
+        if (size.width < 850) {
+            if (leo.aboutOpen) {
+                return -104
+            } else {
+                return 0
+            }
+        } else {
+            if (leo.aboutOpen) {
+                return -126
+            } else {
+                return 0
+            }
+        }
+    })
 
     const summary = useMemo(() => {
         return DOMPurify.sanitize(acf.project_summary)
@@ -72,14 +97,18 @@ const ProjectInfo = ({ project }) => {
                     <Close />
                 </div>
             ) : (
-                <h1 
+                <motion.h1
+                    ref={titleRef}
+                    initial={{ translateX: 0}}
+                    animate={{ translateX: infoLeft}}
+                    transition={{ duration: .1, ease: "linear" }}
                     className="project-title"
                     onClick={() => setLeo( state => ({
                         ...state,
                         infoOpen: true,
                         aboutOpen: state.aboutOpen ? false : false
                     }))}
-                >{project.title.rendered}</h1>
+                >{project.title.rendered}</motion.h1>
             )}
             <AnimatePresence>
                 {leo.infoOpen && (
