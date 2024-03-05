@@ -4,6 +4,15 @@
     margin: 0;
     padding: 0;
     background: $background;
+    scrollbar-width: none;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scrollbar-color: transparent transparent;
+}
+
+.overview-container::-webkit-scrollbar {
+    display: none;
+    -webkit-appearance: none;
+    scrollbar-color: transparent transparent;
 }
 
 .overviews-container {
@@ -15,6 +24,10 @@
     border: 2px solid $background;
     opacity: 0;
     transition: opacity .5s ease-in-out;
+    background: $background;
+    scrollbar-width: none;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scrollbar-color: transparent transparent;
 
     @media screen and (min-width: $breakpoint) {
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -27,15 +40,16 @@
     }
 }
 
+.overviews-container::-webkit-scrollbar {
+    display: none;
+    -webkit-appearance: none;
+    scrollbar-color: transparent transparent;
+}
+
 .overviews-container-visible {
     opacity: 1;
     transition: opacity .5s ease-in-out;
 }
-
-// .overviews-container video.poster {
-//     filter: blur(10px);
-// }
-
 
 .landscape {
     grid-column: span 2;
@@ -94,6 +108,7 @@
         }
     }
 }
+
 .react-tooltip-arrow {
     display: none;
 }

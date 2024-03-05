@@ -1,56 +1,64 @@
-import { useState, useContext, useEffect } from 'react'
-import { LeoContext } from '@/providers/LeoProvider'
-import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import useTimeout from '@/helpers/useSetTimeout'
+import { motion } from 'framer-motion'
 
 import About from './About'
 import Overview from "./Overview"
 import Loader from './Loader'
 
 const MobileOverviews = ({ projects }) => {
-    const [leo, setLeo ] = useContext(LeoContext)
     const [showAbout, setShowAbout] = useState(false)
-    const [loadCheck, setLoadCheck] = useState(false)
-    const [overviewsCount, setOverviewsCount] = useState([])
-    const pathname = usePathname()
 
+    const [mobileOverviewsCount, setMobileOverviewsCount] = useState([])
+    const [mobileOverviewsLoaded, setMobileOverviewsLoaded] = useState(false)
+
+    const [random] = useState(Math.random * 1)
+
+    // reset overviews on navigation or reload
     useEffect(() => {
-        setLeo(state => ({ ...state, overviewsLoaded: false }))
+        console.log("reset mobile overviews")
+        setShowAbout(false)
+        setMobileOverviewsCount([])
+        setMobileOverviewsLoaded(false)
     }, [])
 
+    // check if all videos and images are loaded before revealing
     useEffect(() => {
-        if (!leo.overviewsLoaded) {
-            if (overviewsCount.length === projects.length) {
-                console.log("equal overviews")
-                setLeo(state => ({ ...state, overviewsLoaded: true }))
-                setOverviewsCount([])
+        if (!mobileOverviewsLoaded) {
+            if (mobileOverviewsCount.length === projects.length) {
+                setMobileOverviewsLoaded(true)
+                setMobileOverviewsCount([])
+                clearMobileOverviewsLoading()
                 setTimeout(() => {
-                    console.log("show about")
                     setShowAbout(true)
-                }, 750)
-            } else {
-                if (!loadCheck) {
-                    setTimeout(() => {
-                        if (!leo.overviewsLoaded) {
-                            console.log("timeout over")
-                            setLeo(state => ({ ...state, overviewsLoaded: true}))
-                            setOverviewsCount([])
-                            setTimeout(() => {
-                                console.log("show about")
-                                setShowAbout(true)
-                            }, 750)
-                        }
-                    }, 3000)
-                }
-                setLoadCheck(true)
+                }, 500)
             }
         }
-    }, [projects, overviewsCount, leo.overviewsLoaded])
+    }, [projects, mobileOverviewsCount, mobileOverviewsLoaded])
+
+    // set a timer if images or videos don't load, cancel if loaded
+    const { clear: clearMobileOverviewsLoading } = useTimeout(() => {
+        setMobileOverviewsLoaded(true)
+        setMobileOverviewsCount([])
+        console.log("revealed by timer")
+        setTimeout(() => {
+            setShowAbout(true)
+        }, 500)
+    }, 3000)
 
     return (
         <div className="overview-container">
-            {!leo.overviewsLoaded && <Loader />}
-            {showAbout && <About />}
-            <div className={leo.overviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
+            {!mobileOverviewsLoaded && <Loader />}
+            {showAbout && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: .5 }}
+                >
+                    <About />
+                </motion.div>
+            )}
+            <div className={mobileOverviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
                     {projects.map((project,i) => (
                         <Overview
                             overview={project.overview}
@@ -58,8 +66,7 @@ const MobileOverviews = ({ projects }) => {
                             id={project.id}
                             title={project.title.rendered}
                             isDesktop={false}
-                            overviewsCount={overviewsCount}
-                            setOverviewsCount={setOverviewsCount}
+                            setOverviewsCount={setMobileOverviewsCount}
                             key={project.id}
                         />
                     ))}

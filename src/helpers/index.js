@@ -95,7 +95,7 @@ export const prevProject = (currentId, projects) => {
 }
 
 export const nextProject = (currentId, projects) => {
-    if (currentId === projects[projects.length].id) {
+    if (currentId === projects[projects.length - 1].id) {
         return projects[0]
     } else {
         const currentProjectIndex = projects.findIndex(project => project.id === currentId)

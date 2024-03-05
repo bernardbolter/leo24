@@ -1,34 +1,46 @@
+.project-info-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    height: 39px;
+}
+
 .project-info-container {
-    width: 88%;
-    max-height: calc(100vh - 90px);
+    width: calc(100vw - 51px);
+    max-height: calc(60vh);
     overflow: scroll;
     overflow-x: hidden;
     background: $info-back;
     position: absolute;
-    left: 10px;
-    top: 53px;
+    left: 0;
+    top: 47px;
     border-radius: 15px;
     max-width: 400px;
-    padding: 10px;
+    padding: 15px;
     z-index: 999;
-    opacity: 1;
-    visibility: visible;
-    transition: z-index .7s step-start, visibility 0s, opacity .7s ease-in-out;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     scrollbar-width: none;
+    -ms-overflow-style: none;
 
     @media screen and (min-width: 850px) {
-        max-height: calc(100vh - 98px);
-        top: 59px;
+        max-height: calc(100vh - 100px);
+        top: 49px;
         padding: 15px;
+        width: 400px;
     }
 
     h1 {
         color: white !important;
         font-size: 12px;
+        line-height: 17px;
         font-weight: 400;
-        margin: 20px 10px;
+        margin: 10px 10px 20px;
         padding: 0;
 
         @media screen and (min-width: 850px) {
@@ -39,6 +51,7 @@
     h2 {
         color: white;
         font-size: 12px;
+        line-height: 17px;
         font-weight: 400;
         margin: 0 10px 0;
         padding: 0;
@@ -61,23 +74,28 @@
     }
 }
 
-.project-info-container-hide {
-    visibility: 0;
-    opacity: 0;
-    z-index: -10;
-    transition: z-index .7s step-end, opacity .7s, visibility 0s ease-in-out;
+.project-info-container::-webkit-scrollbar {
+    display: none;
+}
+
+// .project-info-container-hide {
+//     visibility: 0;
+//     opacity: 0;
+//     z-index: -10;
+//     transition: z-index .7s step-end, opacity .7s, visibility 0s ease-in-out;
+// }
+
+.project-header {
+    position: relative;
 }
 
 .project-title {
-    position: absolute;
-    z-index: 999;
-    top: 10px;
     background: $info-back;
     border-radius: 20px;
     color: white;
     font-weight: 400;
     font-size: 12px;
-    margin: 0;
+    margin: 0 0 0 10px;
     padding: 10px 14px;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
@@ -88,6 +106,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: auto;
+    position: relative;
+    display: block;
 
     &:hover {
         transform: scale(1.05);
@@ -102,25 +123,23 @@
 .info-close {
     width: 34px;
     height: 34px;
-    background: $info-back;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    position: absolute;
+    position: relative;
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
-    position: absolute;
     z-index: 1002;
-    top: 10px;
     transform: scale(1);
     transition: all .2s ease-in-out;
+    margin: 0 0 0 10px;
 
     @media screen and (min-width: 850px) {
         width: 39px;
         height: 39px;
+        margin: 0 0 0 10px;
     }
 
     &:hover {
@@ -133,5 +152,15 @@
         border-radius: 50%;
         opacity: .65;
         cursor: pointer;
+    }
+
+    svg {
+        width: 34px;
+        height: 34px;
+
+        @media screen and (min-width: 850px) {
+            width: 39px;
+            height: 39px;
+        }
     }
 }

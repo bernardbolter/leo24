@@ -1,57 +1,83 @@
-import { useContext, useEffect } from "react"
-import { LeoContext } from "@/providers/LeoProvider"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { motion, useAnimationControls } from 'framer-motion'
 
-const Thumb = ({ thumb, index }) => {
-    const [leo, setLeo, handleTimer] = useContext(LeoContext)
+const Thumb = ({ 
+    thumb, 
+    imageIndex,
+    setImageIndex,
+    clearTimer,
+    resetTimer,
+    timerPaused,
+    setTimerPaused,
+    index,
+}) => {
     const controls = useAnimationControls()
+    const [resetSameIndex, setResetSameIndex] = useState(false)
 
     useEffect(() => {
-        console.log("clock: ", leo.timerPaused)
-        if (leo.timerPaused) {
+        // console.log("reset thumb")
+        if (timerPaused) {
+            // console.log("reset thumb timer paused")
             controls.stop()
         } else {
-            if (index < leo.currentImageIndex) {
+            // console.log("reset thumb timer not paused")
+            if (index < imageIndex) {
                 controls.start({
                     maskPosition: '0% 0%',
+                    webkitMaskPosition: '0% 0%',
                     transition: { duration: 0 }
                 })
             }
-            if (index > leo.currentImageIndex) {
+            if (index > imageIndex) {
                 controls.start({
                     maskPosition: '100% 100%',
-                    transition: { duration: 0}
+                    webkitMaskPosition: '100% 100%',
+                    transition: { duration: 0 }
                 })
             }
-            if (index === leo.currentImageIndex) {
-                console.log('thumb start overlay')
+            if (index === imageIndex || resetSameIndex) {
+                // console.log('thumb start overlay')
                 controls.set({
-                    maskPosition: '100% 100%'
+                    maskPosition: '100% 100%',
+                    webkitMaskPosition: '100% 100%'
                 })
                 controls.start({
                     maskPosition: '0% 0%',
+                    webkitMaskPosition: '0% 0%',
                     transition: { duration: parseInt(thumb.video_length) }
                 })
-                setLeo(state => ({ ...state, currentImageLength: parseInt(thumb.video_length.concat("000"))}))
             }
         }
-    }, [index, leo.currentImageIndex, leo.timerPaused])
+    }, [index, imageIndex, timerPaused, resetSameIndex])
 
     return (
         <section 
-            className={leo.timerPaused ? "project-thumb project-thumb-no-hover" : "project-thumb"}
+            className={timerPaused ? "project-thumb project-thumb-no-hover" : "project-thumb"}
             onClick={() => {
                 // console.log("click thumb")
-                // console.log(leo.timerPaused)
-                if (!leo.timerPaused) {
-                    console.log("in current thumb: ", thumb.video_length)
-                    handleTimer(null, false)
-                    handleTimer(index, true)
-                    setLeo(state => ({ ...state, currentImageIndex: index, restartVideo: true }))
+                // console.log(timerPaused)
+                // console.log(imageIndex)
+                if (!timerPaused) {
+                    // console.log("in current thumb: ", imageIndex)
+                    if (index === imageIndex) {
+                        // console.log("same same")
+                        setResetSameIndex(true)
+                        clearTimer()
+                        setTimerPaused(true)
+                        setTimeout(() => {
+                            setResetSameIndex(false)
+                            setTimerPaused(false)
+                            resetTimer()
+                        }, 1)
+                    }
+                    clearTimer()
+                    setImageIndex(index)
+                    setTimerPaused(true)
                     setTimeout(() => {
-                        setLeo(state => ({ ...state, restartVideo: false }))
-                    }, 100)
+                        setTimerPaused(false)
+                        resetTimer()
+                    }, 1)
                 }
             }}
         >

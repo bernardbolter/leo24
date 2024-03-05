@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react'
 import { LeoContext } from '@/providers/LeoProvider' 
-import Image from 'next/image'
 import useSound from 'use-sound'
 import Audios from './Audio'
+import Close from '@/svg/close'
 
 const Title = () => {
-   const [leo, setLeo, handleTimer] = useContext(LeoContext)
+   const [leo, setLeo] = useContext(LeoContext)
    const [audio, setAudio] = useState(Audios[Math.floor(Math.random()*Audios.length)])
    const [play] = useSound(audio)
 
@@ -22,26 +22,18 @@ const Title = () => {
                onClick={() => setLeo(state => ({
                   ...state,
                   aboutOpen: false,
-                  timerPaused: false
                }))}   
             >
-               <Image
-                  src={'/images/close.png'}
-                  alt="close icon"
-                  width={39}
-                  height={39}
-               />
+               <Close />
             </div>
          ) : (
             <h1 
                className="name-top"
                onClick={() => {
-                  handleTimer(null, null, false)
                   setLeo(state => ({
                      ...state,
                      aboutOpen: true,
                      infoOpen: state.infoOpen ? false : false,
-                     timerPaused: true
                   }))
                   randomAudio()
                }}

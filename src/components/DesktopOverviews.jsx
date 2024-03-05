@@ -1,52 +1,65 @@
-import { useState, useContext, useEffect } from 'react'
-import { LeoContext } from '@/providers/LeoProvider'
-import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import useTimeout from '@/helpers/useSetTimeout'
+import { motion } from 'framer-motion'
 
 import About from "./About"
 import Overview from "./Overview"
 import Loader from './Loader'
 
 const DesktopOverviews = ({ projects }) => {
-    const [leo, setLeo] = useContext(LeoContext)
     const [showAbout, setShowAbout] = useState(false)
-    const [loadCheck, setLoadCheck] = useState(false)
-    const [overviewsCount, setOverviewsCount] = useState([])
 
-    useEffect(() => {
-        setLeo(state => ({ ...state, overviewsLoaded: false }))
-        setLoadCheck(false)
-    }, [])
+    const [desktopOverviewsCount, setDesktopOverviewsCount] = useState([])
+    const [desktopOverviewsLoaded, setDesktopOverviewsLoaded] = useState(false)
 
+    const [random] = useState(Math.random * 1)
+
+    // reset overviews on navigation or reload
     useEffect(() => {
-        if (!leo.overviewsLoaded) {
-            if (overviewsCount.length === projects.length) {
-                setLeo(state => ({ ...state, overviewsLoaded: true }))
-                setOverviewsCount([])
+        console.log("reset desktop overviews")
+        setShowAbout(false)
+        setDesktopOverviewsCount([])
+        setDesktopOverviewsLoaded(false)
+    }, [random])
+
+    // check if all videos and images are loaded before revealing
+    useEffect(() => {
+        if (!desktopOverviewsLoaded) {
+            console.log(desktopOverviewsCount)
+            if (desktopOverviewsCount.length === projects.length) {
+                setDesktopOverviewsLoaded(true)
+                setDesktopOverviewsCount([])
+                clearDesktopOverviewsLoading()
                 setTimeout(() => {
                     setShowAbout(true)
-                }, 750)
-            } else {
-                if (!loadCheck) {
-                    setTimeout(() => {
-                        if (!leo.overviewsLoaded) {
-                            setLeo(state => ({ ...state, overviewsLoaded: true }))
-                            setOverviewsCount([])
-                            setTimeout(() => {
-                                setShowAbout(true)
-                            }, 750)
-                        }
-                    }, 3000)
-                }
-                setLoadCheck(true)
-            }
+                }, 500)
+            } 
         }
-    }, [projects, overviewsCount, leo.overviewsLoaded])
+    }, [projects, desktopOverviewsCount, desktopOverviewsLoaded])
+
+    // set a timer if images or videos don't load, cancel if loaded
+    const { clear: clearDesktopOverviewsLoading } = useTimeout(() => {
+        setDesktopOverviewsLoaded(true)
+        setDesktopOverviewsCount([])
+        console.log("revealed by timer")
+        setTimeout(() => {
+            setShowAbout(true)
+        }, 500)
+    }, 3000)
 
     return (
         <div className="overview-container">
-            {!leo.overviewsLoaded && <Loader />} 
-            {showAbout && <About />}
-            <div className={leo.overviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
+            {!desktopOverviewsLoaded && <Loader />} 
+            {showAbout && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: .5 }}
+                >
+                    <About />
+                </motion.div>
+            )}
+            <div className={desktopOverviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
                 {projects.map((project, i) => {
                         return (<Overview 
                             overview={project.overview} 
@@ -54,7 +67,7 @@ const DesktopOverviews = ({ projects }) => {
                             id={project.id}
                             title={project.title.rendered}
                             isDesktop={true}
-                            setOverviewsCount={setOverviewsCount}
+                            setOverviewsCount={setDesktopOverviewsCount}
                             key={project.id}
                         />)
                     })}

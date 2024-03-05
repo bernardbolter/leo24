@@ -9,22 +9,24 @@ export const LeoContext = createContext()
 
 const LeoProvider = ({ children }) => {
     const size = useWindowSize()
-    const timer = useRef(null)
+    let timer = useRef(null)
     const [leo, setLeo] = useState({
         dataLoaded: false,
         dataError: false,
         aboutError: false,
+        impressumError: false,
         isLowPower: false,
         rawPosts: [],
         about: {},
         desktopProjects: [],
-        sortedDesktop: [],
         mobileProjects: [],
-        soretedMobile: [],
-        currentID: 0,
-        currentProject: {},
+        newProjectId: 0,
         aboutOpen: false,
         infoOpen: false,
+        imageIndex: 0,
+        imprint: {},
+
+
         currentTitleWidth: 0,
         currentImageIndex: 0,
         currentImageLength: 0,
@@ -33,50 +35,8 @@ const LeoProvider = ({ children }) => {
         imagesCount: 0,
         projectLoaded: false,
         overviewsCount: 0,
-        overviewsLoaded: false
+        overviewsLoaded: false,
     })
-
-    const handleTimer = (
-            currentId,
-            projects,
-            imageIndex, 
-            imageArray, 
-            length, 
-            start
-        ) => {
-        console.log("index: ", index)
-        console.log("cur ind: ", leo.currentImageIndex)
-        console.log("length: ", length)
-        console.log("start: ", start)
-
-        // if (start) {
-        //     // console.log("cur ind: ", leo.currentImageIndex)
-        //     var thisLength = parseInt(length.concat("000"))
-        //     var nextIndex = imageIndex + 1
-        //     // var nextLength = parseInt(leo.currentProject.imageArray[index + 1].video_length.concat("000"))
-        //     // console.log("next i: ", nextIndex)
-        //     // console.log("next l: ", nextLength)
-        //     timer.current = setTimeout(() => {
-        //         // console.log('in the timeout')
-        //         // console.log(index)
-        //         // console.log(leo.currentProject.imageArray.length - 1)
-        //         if (imageIndex === imageArray.length - 1) {
-        //             console.log('on to the next')
-        //             var next = nextProject(currentId, projects)
-        //             setLeo(state => ({ ...state, currentImag }))
-        //         } else {
-        //             handleTimer(nextIndex, true)
-        //             setLeo(state => ({ ...state, currentImageIndex: nextIndex, restartVideo: true }))
-        //             setTimeout(() => {
-        //                 setLeo(state => ({ ...state, restartVideo: false }))
-        //             }, 100)
-        //         }
-        //     }, thisLength)
-        // } else {
-        //     // console.log("time to stop")
-        //     clearTimeout(timer.current) 
-        // }
-    }
     
     useEffect(() => {
         async function loadData() {
@@ -119,15 +79,30 @@ const LeoProvider = ({ children }) => {
             loadAbout()
         }
     }, [])
+
+    useEffect(() => {
+        async function loadImprint() {
+            const response = await fetch('https://leonhardlaupichler.com/backend/wp-json/wp/v2/pages/487')
+
+            if (!response.ok) {
+                console.log(response)
+                setLeo(state => ({ ...state, imprintError: true }))
+                return
+            }
+
+            const imprintData = await response.json()
+            setLeo(state => ({ ...state, imprint: imprintData }))
+        }
+        if (Object.keys(leo.imprint).length === 0) {
+            loadImprint()
+        }
+    }, [])
     
     return (
         <LeoContext.Provider
             value={[
                 leo,
-                setLeo, 
-                handleTimer, 
-                prevProject, 
-                nextProject,
+                setLeo
             ]}
         >
             {children}

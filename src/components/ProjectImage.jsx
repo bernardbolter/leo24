@@ -1,44 +1,62 @@
-import { useContext, useRef, useEffect, useState } from 'react'
-import { LeoContext } from '@/providers/LeoProvider'
+import { useRef, useEffect, useState } from 'react'
 import Image from "next/image"
 import ReactPlayer from "react-player"
 
-const ProjectImage = ({ image, index, isDesktop, setImagesCount, title }) => {
-    const [leo, setLeo, handleTimer] = useContext(LeoContext)
+const ProjectImage = ({ 
+    image, 
+    index, 
+    isDesktop, 
+    setImagesCount, 
+    imageIndex, 
+    title, 
+    timerPaused,
+    setTimerPaused,
+    clearTimer,
+    resetTimer,
+    transitionOn
+}) => {
     const [playing, setPlaying] = useState(true)
     const videoRef = useRef(null)
     const [videoLoaded, setVideoLoaded] = useState(false)
-
-    // console.log(image)
-
-    // useEffect(() => {
-    //     // console.log(videoLoaded, index)
-    //     if (leo.currentImageIndex === index) {
-    //         console.log(videoLoaded, index)
-    //     }
-    // }, [videoLoaded, leo.currentImageIndex, index])
+    const [videoWasPaused, setVideoWasPaused] = useState(false)
 
     useEffect(() => {
         // console.log(videoRef.current)
-        // console.log('video effect: ', leo.restartVideo)
+        // console.log('video effect: ', timerPaused)
+        // console.log(imageIndex)
         if (videoRef.current !== null) {
-            if (!leo.timerPaused) {
+            if (!timerPaused && (index === imageIndex)) {
                 // console.log('video effect inside')
                 videoRef.current.seekTo(0, "seconds")
                 setPlaying(true)
             } else {
+                // console.log('video effect inside not')
                 setPlaying(false)
             }
-            if (leo.restartVideo) {
-                // console.log("in video restart")
-                videoRef.current.seekTo(0, "seconds")
-                setPlaying(true)
+        }
+    }, [timerPaused])
+
+    useEffect(() => {
+        // console.log("check video loaded: ", videoLoaded)
+        if (index === imageIndex) {
+            // console.log(index, " this video loaded: ", videoLoaded)
+            if (!videoLoaded) {
+                // console.log(index, " this video not loaded")
+                setVideoWasPaused(true)
+                setTimerPaused(true)
+                clearTimer()
+            } else {
+                if (videoWasPaused) {
+                    // console.log(index, " this video loaded")
+                    setTimerPaused(false)
+                    resetTimer()
+                }
             }
         }
-    }, [leo.timerPaused, leo.restartVideo])
+    }, [videoLoaded])
 
     return (
-        <div className="project-image">
+        <div className={transitionOn ? "project-image" : "project-image project-image-hide"}>
             {!image.image && !image.video ? (
                 <Image
                     src={'https://www.tlbx.app/200-300.svg'}
@@ -56,6 +74,7 @@ const ProjectImage = ({ image, index, isDesktop, setImagesCount, title }) => {
                     alt={`project image from the ${title} project`}
                     fill
                     priority
+                    style={{ objectFit: 'cover' }}
                     onLoad={() => {
                         // console.log(`image project ${index} loaded `)
                         setImagesCount(imagesCount => [...imagesCount, index])

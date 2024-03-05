@@ -8,6 +8,7 @@ const ProjectLoader = ({ image, title }) => {
                 alt={`loading ${title} project`}
                 fill
                 priority={true}
+                style={{ objectFit: 'cover'}}
             />
         </div>
     )

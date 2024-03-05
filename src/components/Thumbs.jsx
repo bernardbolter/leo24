@@ -1,37 +1,26 @@
 import { useContext, useState, useEffect } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
-import { useWindowSize } from "@/helpers/useWindowSize"
+import { AnimatePresence, motion } from "framer-motion"
 
 import Thumb from "./Thumb"
 
-const Thumbs = ({ thumbs }) => {
-    const [leo, setLeo, handleTimer] = useContext(LeoContext)
-    const [thumbsLeft, setThumbsLeft] = useState(0)
-    const size = useWindowSize()
+const Thumbs = ({ 
+    thumbs, 
+    imageIndex,
+    setImageIndex,
+    clearTimer,
+    resetTimer,
+    timerPaused,
+    setTimerPaused,
+    projectLoaded
+}) => {
+    const [leo] = useContext(LeoContext)
     const [showDisplay, setShowDisplay] = useState('flex')
-    console.log("tp: ",leo.timerPaused)
+
 
     useEffect(() => {
-        if (size.width < 850) {
-            setThumbsLeft(13)
-        } else {
-            if (leo.infoOpen) {
-                setThumbsLeft(230)
-            } else if (leo.aboutOpen) {
-                setThumbsLeft(70 + leo.currentTitleWidth)
-            } else {
-                setThumbsLeft(192 + leo.currentTitleWidth)
-            }
-        }
-    }, [leo.currentTitleWidth, leo.aboutOpen, leo.infoOpen])
-
-    useEffect(() => {
-        if (size.width < 850) {
-            if (leo.infoOpen || leo.aboutOpen) {
-                setShowDisplay('none')
-            } else {
-                setShowDisplay('flex')
-            }
+        if (leo.infoOpen || leo.aboutOpen) {
+            setShowDisplay('none')
         } else {
             setShowDisplay('flex')
         }
@@ -41,13 +30,34 @@ const Thumbs = ({ thumbs }) => {
         <div 
             className="thumbs-container"
             style={{
-                left: thumbsLeft,
                 display: showDisplay
             }}    
         >
-            {thumbs.map((thumb, i) => (
-                <Thumb thumb={thumb} index={i} key={i} />
-            ))}
+            <AnimatePresence>
+                {projectLoaded && (
+                    thumbs.map((thumb, i) => (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0, transition: { duration: 0.4 } }}
+                            transition={{ duration: 1, delay: i * .07 }}
+                            key={i}
+                        >
+                            <Thumb 
+                                thumb={thumb} 
+                                imageIndex={imageIndex}
+                                setImageIndex={setImageIndex}
+                                clearTimer={clearTimer}
+                                resetTimer={resetTimer}
+                                timerPaused={timerPaused}
+                                setTimerPaused={setTimerPaused}
+                                index={i} 
+                                key={i}
+                            />
+                        </motion.div>
+                    ))
+                )}
+            </AnimatePresence>
         </div>
     )
 }

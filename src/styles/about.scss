@@ -1,7 +1,18 @@
-.name-top {
+.about-outter {
     position: fixed;
+    z-index: 1001;
     top: 10px;
     left: 10px;
+}
+
+.about-outter-projects {
+    position: relative;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+}
+
+.name-top {
     background: $info-back;
     z-index: 999;
     border-radius: 20px;
@@ -11,11 +22,13 @@
     margin: 0;
     padding: 10px 14px;
     white-space: nowrap;
-    cursor: pointer;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     transform: scale(1);
-        transition: all .2s ease-in-out; 
+    transition: all .2s ease-in-out;
+    width: auto;
+    position: relative;
+    display: block;
 
     &:hover {
         transform: scale(1.05);
@@ -30,20 +43,16 @@
 .name-close {
     width: 34px;
     height: 34px;
-    background: $info-back;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     position: absolute;
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
-    position: absolute;
+    position: relative;
     z-index: 1002;
-    top: 10px;
-    left: 10px;
     transform: scale(1);
     transition: all .2s ease-in-out;
     
@@ -57,6 +66,16 @@
         transition: all .2s ease-in-out; 
     }
 
+    svg {
+        width: 34px;
+        height: 34px;
+
+        @media screen and (min-width: 850px) {
+            width: 39px;
+            height: 39px;
+        }
+    }
+
     img {
         width: 100%;
         border-radius: 50%;
@@ -66,29 +85,28 @@
 }
 
 .about-container {
-    width: 85%;
-    max-height: calc(100vh - 98px);
+    width: calc(100% - 50px);
+    max-height: calc(60vh);
     overflow: scroll;
     background: $info-back;
     position: fixed;
-    top: 53px;
+    top: 57px;
     left: 10px;
     border-radius: 15px;
     max-width: 400px;
     padding: 15px;
     z-index: 999;
-    opacity: 1;
-    visibility: visible;
-    transition: z-index .7s step-start, visibility 0s, opacity .7s ease-in-out;
+
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     overflow: scroll;
     overflow-x: hidden;
     scrollbar-width: none;
+    -ms-overflow-style: none;
 
     @media screen and (min-width: $breakpoint) {
         width: 400px;
-        left: 10px;
+        max-height: calc(100vh - 98px);
     }
 
     @media screen and (min-width: 850px) {
@@ -98,7 +116,7 @@
     h2 {
         color: white;
         font-size: 12px;
-        line-height: 1.4em;
+        line-height: 17px;
         margin: 10px 10px 0;
         padding: 0;
         font-weight: 400;
@@ -111,7 +129,7 @@
     p {
         font-size: 12px;
         font-weight: 400px;
-        line-height: 1.4em;
+        line-height: 17px;
         color: #bbb;
         margin: 0 0 20px 10px;
 
@@ -139,6 +157,9 @@
         }
     }
 }
+.about-container::-webkit-scrollbar {
+    display: none;
+}
 
 .about-email {
     color: white;
@@ -153,13 +174,6 @@
     }
 }
 
-.about-no-show {
-    visibility: 0;
-    opacity: 0;
-    z-index: -10;
-    transition: z-index .7s step-end, opacity .7s, visibility 0s ease-in-out;
-}
-
 .services-container p {
     color: white;
     font-size: 12px;
@@ -171,14 +185,6 @@
     }
 }
 
-.services-container br {
-    display: none;
-
-    @media screen and (min-width: $breakpoint) {
-        display: block;
-     }
-}
-
 .clients-container p {
     color: white;
     font-size: 12px;
@@ -188,14 +194,6 @@
     @media screen and (min-width: 850px) {
         font-size: 13px;
     }
-}
-
-.clients-container br {
-    display: none;
-
-    @media screen and (min-width: $breakpoint) {
-        display: block;
-     }
 }
 
 .clock-container {

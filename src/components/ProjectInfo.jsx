@@ -1,8 +1,8 @@
-import { useContext, useMemo, useRef, useEffect, useState } from "react"
+import { useContext, useMemo } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
-import { useWindowSize } from "@/helpers/useWindowSize"
+import { AnimatePresence, motion } from "framer-motion"
 import DOMPurify from "dompurify"
-import Image from "next/image"
+import Close from '@/svg/close'
 
 const infos = [
     { slug: "agency", name: "Agency"},
@@ -47,16 +47,9 @@ const infos = [
 ]
 
 const ProjectInfo = ({ project }) => {
+    // console.log(project)
     const [leo, setLeo] = useContext(LeoContext)
     const { acf } = project
-    const projectTitleRef = useRef(null)
-    const [projectTitleLeft, setProjectTitleLeft] = useState(0)
-    const size = useWindowSize()
-
-    useEffect(() => {
-        // console.log(projectTitleRef.current.clientWidth)
-        setLeo(state => ({ ...state, currentTitleWidth: projectTitleRef.current.clientWidth }))
-    }, [projectTitleRef, leo.currentProject])
 
     const summary = useMemo(() => {
         return DOMPurify.sanitize(acf.project_summary)
@@ -66,75 +59,57 @@ const ProjectInfo = ({ project }) => {
         return DOMPurify.sanitize(acf.handle)
     }, [acf])
 
-    useEffect(() => {
-        if ( size.width < 850 ) {
-            console.log("title mobile")
-            if (leo.aboutOpen) {
-
-                setProjectTitleLeft(50)
-            } else {
-                setProjectTitleLeft(155)
-            }
-        } else {
-            console.log("title desktop")
-            if (leo.aboutOpen) {
-                setProjectTitleLeft(59)
-            } else {
-                setProjectTitleLeft(183)
-            }
-        }
-    }, [size.width, leo.aboutOpen])
-
     return (
-        <section className="project-info-wrapper">
+        <section className="project-info">
             {leo.infoOpen ? (
                 <div 
                     className="info-close"
-                    style={{ left: projectTitleLeft }}
                     onClick={() => setLeo(state => ({
                         ...state,
-                        infoOpen: false,
-                        timerPaused: false
+                        infoOpen: false
                     }))}   
                 >
-                    <Image
-                        src={'/images/close.png'}
-                        alt="close icon"
-                        width={39}
-                        height={39}
-                    />
+                    <Close />
                 </div>
             ) : (
                 <h1 
                     className="project-title"
-                    ref={projectTitleRef}
-                    style={{ left: projectTitleLeft }}
                     onClick={() => setLeo( state => ({
                         ...state,
                         infoOpen: true,
-                        aboutOpen: state.aboutOpen ? false : false,
-                        timerPaused: true
+                        aboutOpen: state.aboutOpen ? false : false
                     }))}
                 >{project.title.rendered}</h1>
             )}
-            <div className={leo.infoOpen ? 'project-info-container' : 'project-info-container project-info-container-hide'}>
-                    {acf.project_summary.length !== 0 && (
-                        <h1 dangerouslySetInnerHTML={{ __html: summary }}/>
-                    )}
+            <AnimatePresence>
+                {leo.infoOpen && (
+                    <motion.div 
+                        className="project-info-container"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: .7 }}
+                        key="project-info-container"
+                    >
+                            {acf.project_summary.length !== 0 && (
+                                <h1 dangerouslySetInnerHTML={{ __html: summary }}/>
+                            )}
 
-                    {infos.map(info => {
-                        return acf[info.slug].length !== 0 && (
-                            <div key={info.slug}>
-                                <h2 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(acf[info.slug])}} />
-                                <p>{info.name}</p>
-                            </div>
-                        )
-                    })}
+                            {infos.map(info => {
+                                return acf[info.slug].length !== 0 && (
+                                    <div key={info.slug}>
+                                        <h2 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(acf[info.slug])}} />
+                                        <p>{info.name}</p>
+                                    </div>
+                                )
+                            })}
 
-                    {acf.handle.length !== 0 && (
-                        <h2 dangerouslySetInnerHTML={{ __html: handle}} />
-                    )}
-            </div>            
+                            {acf.handle.length !== 0 && (
+                                <h2 dangerouslySetInnerHTML={{ __html: handle}} />
+                            )}
+                    </motion.div>
+                )}
+            </AnimatePresence>          
         </section>
     )
 }

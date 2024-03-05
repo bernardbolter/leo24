@@ -13,7 +13,6 @@ const Loader = () => {
                     priority
                 />
             </div>
-            {/* <h1 className="loader-name">Leonhard Laupichler</h1> */}
         </div>
     )
 }
