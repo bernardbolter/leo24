@@ -48,7 +48,7 @@ const DesktopOverviews = ({ projects }) => {
     }, 3000)
 
     return (
-        <div className="overview-container">
+        <div className={"overview-container"}>
             {!desktopOverviewsLoaded && <Loader />} 
             {showAbout && (
                 <motion.div
@@ -59,7 +59,10 @@ const DesktopOverviews = ({ projects }) => {
                     <About />
                 </motion.div>
             )}
-            <div className={desktopOverviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
+            <div className={desktopOverviewsLoaded 
+                ? "overviews-container overviews-container-desktop overviews-container-visible"
+                : "overviews-container overviews-container-desktop"
+            }>
                 {projects.map((project, i) => {
                         return (<Overview 
                             overview={project.overview} 

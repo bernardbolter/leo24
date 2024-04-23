@@ -12,6 +12,7 @@ const infos = [
     { slug: "cgi", name: "CGI"},
     { slug: "client", name: "Client"},
     { slug: "code", name: "Code"},
+    { slug: "chief_creative_officer", name: " Chief Creative Officer" },
     { slug: "concept_research_and_strategy", name: "Concept, Research, and Strategy"},
     { slug: "content_direction", name: "Content Direction"},
     { slug: "creative_direction", name: "Creative Direction"},
@@ -102,6 +103,9 @@ const ProjectInfo = ({ project }) => {
                     initial={{ translateX: 0}}
                     animate={{ translateX: infoLeft}}
                     transition={{ duration: .1, ease: "linear" }}
+                    whileHover={{
+                        scale: 1.05,
+                      }}
                     className="project-title"
                     onClick={() => setLeo( state => ({
                         ...state,
@@ -125,6 +129,7 @@ const ProjectInfo = ({ project }) => {
                             )}
 
                             {infos.map(info => {
+                                // console.log(info)
                                 return acf[info.slug].length !== 0 && (
                                     <div key={info.slug}>
                                         <h2 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(acf[info.slug])}} />

@@ -62,22 +62,24 @@ const DesktopProject = () => {
         setImageIndex(0)
         setImagesCount([])
         setCurrentImageLength(parseInt(desktopCurrentProject.imageArray[imageIndex].video_length.concat('000')))
-    }, 3000)
+    }, 6000)
 
     // Image timer
     const { clear: clearTimer, reset: resetTimer } = useTimeout(() => {
-        // console.log("dat time: ", currentImageLength)
-        if (projectLoaded) {
-            if (imageIndex !== desktopCurrentProject.imageArray.length - 1) {
-                setImageIndex(index => index + 1)
-                resetTimer()
-                setDesktopTimerPaused(true)
-                setTimeout(() => {
-                    setDesktopTimerPaused(false)
-                }, 1)
-            } else {
-                // console.log("next project")
-                nextProject()
+        console.log("dat time: ", leo.isLowPower)
+        if (!leo.isLowPower) {
+            if (projectLoaded) {
+                if (imageIndex !== desktopCurrentProject.imageArray.length - 1) {
+                    setImageIndex(index => index + 1)
+                    resetTimer()
+                    setDesktopTimerPaused(true)
+                    setTimeout(() => {
+                        setDesktopTimerPaused(false)
+                    }, 1)
+                } else {
+                    // console.log("next project")
+                    nextProject()
+                }
             }
         }
     }, currentImageLength)
@@ -151,9 +153,6 @@ const DesktopProject = () => {
                 <AnimatePresence>
                     <motion.div
                         className="project-info-wrapper"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
                         key={`${desktopCurrentProject.id}-desktop-project-inf0-wrapper`}
                     >
                         <About key={`${desktopCurrentProject.id}-desktop-about`}/>

@@ -1,6 +1,5 @@
 import { useContext, useRef, useState, useEffect } from 'react'
 import { LeoContext } from '@/providers/LeoProvider'
-import { useRouter } from 'next/navigation'
 import { useWindowSize } from '@/helpers/useWindowSize'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -22,10 +21,7 @@ const Overview = ({
         overview_poster
     } = overview
 
-    // console.log(index, overview)
-
     const [leo, setLeo] = useContext(LeoContext)
-    const router = useRouter()
     const overviewVideoRef = useRef()
     const [playing, setPlaying] = useState(false)
     const [videoLoaded, setVideoLoaded] = useState(false)
@@ -92,7 +88,7 @@ const Overview = ({
                 <ReactPlayer
                     ref={overviewVideoRef}
                     url={overview_video}
-                    poster={overview_poster ? overview_poster : 'https://www.tlbx.app/200-300.svg'}
+                    poster={overview_poster ? overview_poster.url : 'https://www.tlbx.app/200-300.svg'}
                     width='100%'
                     height='100%'
                     playsinline

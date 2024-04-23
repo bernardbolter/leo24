@@ -21,12 +21,12 @@
     overflow: scroll;
     overflow-x: hidden;
     background: $info-back;
-    position: absolute;
-    left: 0;
-    top: 47px;
+    position: fixed;
+    left: 10px;
+    top: 54px;
     border-radius: 15px;
     max-width: 400px;
-    padding: 15px;
+    padding: 15px 15px 6px 15px;
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
@@ -35,7 +35,7 @@
 
     @media screen and (min-width: 850px) {
         max-height: calc(100vh - 100px);
-        top: 49px;
+        top: 59px;
         padding: 15px;
         width: 400px;
     }
@@ -116,8 +116,8 @@
     flex-shrink: 0;
     flex: 0 1 auto;
     height: 34px;
-    top: 0;
-    left: 148px;
+    top: 10px;
+    left: 158px;
 
     &:hover {
         transform: scale(1.05);
@@ -127,7 +127,7 @@
     @media screen and (min-width: 850px) {
         font-size: 15px;
         height: 39px;
-        left: 175px;
+        left: 185px;
     }
 }
 
@@ -138,7 +138,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
@@ -148,14 +148,14 @@
     margin: 0 0 0 10px;
     flex-shrink: 0;
     flex: 0 1 auto;
-    top: 0;
-    left: 137px;
+    top: 10px;
+    left: 147px;
 
     @media screen and (min-width: 850px) {
         width: 39px;
         height: 39px;
         margin: 0 0 0 10px;
-        left: 165px;
+        left: 175px;
     }
 
     &:hover {

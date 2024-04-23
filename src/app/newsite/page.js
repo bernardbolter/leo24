@@ -28,6 +28,8 @@ const Home = () => {
         })
     }, [])
 
+    console.log(leo.isTablet)
+
     return (
         <>
             <video ref={videoRef} src={'/video/leo_logo.mp4'} muted autoPlay playsInline id="testVideo"></video>
@@ -35,7 +37,7 @@ const Home = () => {
                     <Loader />
                 ) : leo.dataError ? (
                     <Error />
-                ) : size.width > 850  ? <DesktopOverviews projects={leo.desktopProjects} /> : <MobileOverviews projects={leo.mobileProjects}/>
+                ) : (size.width < 850 || leo.isTablet)  ? <MobileOverviews projects={leo.mobileProjects} /> : <DesktopOverviews projects={leo.desktopProjects} />
             }
         </>
     )

@@ -20,7 +20,7 @@ const MobileOverviews = ({ projects }) => {
         setShowAbout(false)
         setMobileOverviewsCount([])
         setMobileOverviewsLoaded(false)
-    }, [])
+    }, [random])
 
     // check if all videos and images are loaded before revealing
     useEffect(() => {
@@ -58,7 +58,7 @@ const MobileOverviews = ({ projects }) => {
                     <About />
                 </motion.div>
             )}
-            <div className={mobileOverviewsLoaded ? "overviews-container overviews-container-visible" : "overviews-container"}>
+            <div className={mobileOverviewsLoaded ? "overviews-container overviews-container-mobile overviews-container-visible" : "overviews-container overviews-container-mobile"}>
                     {projects.map((project,i) => (
                         <Overview
                             overview={project.overview}

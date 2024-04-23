@@ -7,6 +7,7 @@
     scrollbar-width: none;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     scrollbar-color: transparent transparent;
+    touch-action: pan-y;
 }
 
 .overview-container::-webkit-scrollbar {
@@ -15,10 +16,19 @@
     scrollbar-color: transparent transparent;
 }
 
-.overviews-container {
-    display: grid;
+.overviews-container-mobile {
     grid-template-columns: 1fr 1fr 1fr;
     grid-auto-rows: 33.33333vw;
+}
+
+.overviews-container-desktop {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: 16.6666666vw;
+}
+
+.overviews-container {
+    width: 100vw;
+    display: grid;
     grid-auto-flow: dense;
     gap: 2px;
     border: 2px solid $background;
@@ -29,16 +39,12 @@
     -ms-overflow-style: -ms-autohiding-scrollbar;
     scrollbar-color: transparent transparent;
 
-    @media screen and (min-width: $breakpoint) {
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-auto-rows: 16.6666666vw;
-    }
-
     a {
         color: $background;
         text-decoration: none;
     }
 }
+
 
 .overviews-container::-webkit-scrollbar {
     display: none;
@@ -77,6 +83,7 @@
     align-items: center;
     position: relative;
     cursor: pointer;
+    box-sizing: border-box;
 
     opacity: .85;
     transition: opacity .5s ease-in-out;

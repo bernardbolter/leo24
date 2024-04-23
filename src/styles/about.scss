@@ -6,10 +6,10 @@
 }
 
 .about-outter-projects {
-    position: relative;
+    position: fixed;
     z-index: 1001;
-    top: 0;
-    left: 0;
+    top: 10px;
+    left: 10px;
 }
 
 .name-top {
@@ -27,13 +27,14 @@
     transform: scale(1);
     transition: all .2s ease-in-out;
     width: auto;
-    position: relative;
+    position: fixed;
     flex-shrink: 0;
     flex: 0 1 auto;
     height: 34px;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     &:hover {
         transform: scale(1.05);
@@ -53,7 +54,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
@@ -98,7 +99,7 @@
     overflow: scroll;
     background: $info-back;
     position: fixed;
-    top: 57px;
+    top: 54px;
     left: 10px;
     border-radius: 15px;
     max-width: 400px;
@@ -118,7 +119,7 @@
     }
 
     @media screen and (min-width: 850px) {
-        top: 58px;
+        top: 59px;
     }
 
     h2 {

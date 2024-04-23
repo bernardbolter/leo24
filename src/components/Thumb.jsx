@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
+import { LeoContext } from "@/providers/LeoProvider"
 import Image from "next/image"
 import { motion, useAnimationControls } from 'framer-motion'
 
@@ -12,6 +13,7 @@ const Thumb = ({
     setTimerPaused,
     index,
 }) => {
+    const [leo] = useContext(LeoContext)
     const controls = useAnimationControls()
     const [resetSameIndex, setResetSameIndex] = useState(false)
 
@@ -36,7 +38,7 @@ const Thumb = ({
                     transition: { duration: 0 }
                 })
             }
-            if (index === imageIndex || resetSameIndex) {
+            if (index === imageIndex || resetSameIndex || leo.isLowPower) {
                 // console.log('thumb start overlay')
                 controls.set({
                     maskPosition: '100% 100%',
@@ -55,8 +57,8 @@ const Thumb = ({
         <section 
             className={timerPaused ? "project-thumb project-thumb-no-hover" : "project-thumb"}
             onClick={() => {
-                // console.log("click thumb")
-                // console.log(timerPaused)
+                console.log("click thumb")
+                console.log(timerPaused)
                 // console.log(imageIndex)
                 if (!timerPaused) {
                     // console.log("in current thumb: ", imageIndex)
@@ -70,14 +72,15 @@ const Thumb = ({
                             setTimerPaused(false)
                             resetTimer()
                         }, 1)
+                    } else {
+                        clearTimer()
+                        setImageIndex(index)
+                        setTimerPaused(true)
+                        setTimeout(() => {
+                            setTimerPaused(false)
+                            resetTimer()
+                        }, 1)
                     }
-                    clearTimer()
-                    setImageIndex(index)
-                    setTimerPaused(true)
-                    setTimeout(() => {
-                        setTimerPaused(false)
-                        resetTimer()
-                    }, 1)
                 }
             }}
         >

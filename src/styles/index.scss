@@ -16,7 +16,22 @@
 body {
     padding: 0;
     margin: 0;
-    background: $background;
+    background: #000000;
+	position: absolute;
+	// top: 0;
+	// left: 0;
+	// width: 100%;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+body:focus {
+	outline: none !important;
 }
 
 body::-webkit-scrollbar {

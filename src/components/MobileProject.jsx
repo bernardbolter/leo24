@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, useMemo } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
 import useTimeout from "@/helpers/useSetTimeout"
@@ -9,7 +9,7 @@ import Thumbs from "./Thumbs"
 import ProjectImages from "./ProjectImages"
 import ProjectNav from "./ProjectNav"
 
-import Loader from "./Loader"
+import BlackLoader from "./BlackLoader"
 import ProjectLoader from "./ProjectLoader"
 
 const MobileProject = () => {
@@ -60,6 +60,10 @@ const MobileProject = () => {
                 setImagesCount([])
                 setCurrentImageLength(parseInt(mobileCurrentProject.imageArray[imageIndex].video_length.concat('000')))
                 clearMobileLoading()
+                if (leo.isLowPower) {
+                    clearMobileTimer()
+                    setMobileTimerPaused(true)
+                }
             }
         }
     }, [imagesCount, projectLoaded, mobileCurrentProject])
@@ -71,20 +75,25 @@ const MobileProject = () => {
         setImageIndex(0)
         setImagesCount([])
         setCurrentImageLength(parseInt(mobileCurrentProject.imageArray[imageIndex].video_length.concat('000')))
-    }, 3000)
+    }, 6000)
 
     // image timer
     const { clear: clearMobileTimer, reset: resetMobileTimer } = useTimeout(() => {
-        if (projectLoaded) {
-            if (imageIndex !== mobileCurrentProject.imageArray.length - 1) {
-                setImageIndex(index => index + 1)
-                resetMobileTimer()
-                setMobileTimerPaused(true)
-                setTimeout(() => {
-                    setMobileTimerPaused(false)
-                }, 1)
-            } else {
-                nextProject()
+        console.log("leo low power: ", leo.isLowPower)
+        if (!leo.isLowPower) {
+            if (projectLoaded) {
+                console.log("timer project loaded")
+                if (imageIndex !== mobileCurrentProject.imageArray.length - 1) {
+                    setImageIndex(index => index + 1)
+                    resetMobileTimer()
+                    setMobileTimerPaused(true)
+                    setTimeout(() => {
+                        setMobileTimerPaused(false)
+                    }, 1)
+                } else {
+                    console.log("timer project not loaded")
+                    nextProject()
+                }
             }
         }
     }, currentImageLength)
@@ -112,47 +121,42 @@ const MobileProject = () => {
 
          if (currentIndex === leo.mobileProjects.length - 1) {
             setMobileTimerPaused(true)
-            setTimeout(() => {
-                setProjectLoaded(false)
-                setImageIndex(0)
-                setImagesCount([])
-                setMobileCurrentProject(leo.mobileProjects[0])
-            }, 500)
+            setProjectLoaded(false)
+            setImageIndex(0)
+            setImagesCount([])
+            setMobileCurrentProject(leo.mobileProjects[0])
          } else {
             setMobileTimerPaused(false)
-            setTimeout(() => {
-                setProjectLoaded(false)
-                setImageIndex(0)
-                setImagesCount([])
-                setMobileCurrentProject(leo.mobileProjects[currentIndex + 1])
-            }, 500)
+            setProjectLoaded(false)
+            setImageIndex(0)
+            setImagesCount([])
+            setMobileCurrentProject(leo.mobileProjects[currentIndex + 1])
          }
     }
 
     // restart
     useEffect(() => {
-        if (projectLoaded) {
+        if (projectLoaded || leo.isLowPower) {
+            console.log("restart loaded")
             setTimeout(() => {
                 setMobileTimerPaused(false)
                 resetMobileTimer()
-            }, 500)
+            }, 10)
         } else {
+            console.log("restart not loaded")
             setMobileTimerPaused(true)
             clearMobileTimer()
         }
-    }, [projectLoaded])
+    }, [projectLoaded, leo.isLowPower])
         
     return (
         <>
             {Object.keys(mobileCurrentProject).length === 0 ? (
-                <Loader />
+                <BlackLoader />
             ) : (
                 <AnimatePresence>
                     <motion.div
                         className="project-info-wrapper"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
                         key={`${mobileCurrentProject.id}-mobile-project-info-wrapper`} 
                     >
                         <About key={`${mobileCurrentProject.id}-mobile-about`} />
@@ -169,7 +173,11 @@ const MobileProject = () => {
                             key={`${mobileCurrentProject.id}-mobile-thumbs`} 
                         />
                     </motion.div>
-                    {!projectLoaded && <ProjectLoader image={mobileCurrentProject.acf.loading_image_portrait.sizes.medium} title={mobileCurrentProject.title.rendered} />}
+                    {!projectLoaded && <ProjectLoader 
+                            image={mobileCurrentProject.acf.loading_image_portrait.sizes.medium} 
+                            title={mobileCurrentProject.title.rendered}
+                        />
+                    }
                     <motion.div
                         className="project-images-wrapper"
                         key={`${mobileCurrentProject.id}-mobile-project-wrapper`}

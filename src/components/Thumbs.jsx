@@ -32,7 +32,7 @@ const Thumbs = ({
             className="thumbs-container"
             style={{
                 display: showDisplay,
-                left: size.width < 850 ? 10 : 175 + leo.currentTitleWidth
+                left: size.width < 850 ? 10 : 185 + leo.currentTitleWidth
             }}    
         >
             <AnimatePresence>
@@ -44,6 +44,7 @@ const Thumbs = ({
                             exit={{ opacity: 0, transition: { duration: 0.4 } }}
                             transition={{ duration: 1, delay: i * .07 }}
                             key={i}
+                            style={{ position: 'relative' }}
                         >
                             <Thumb 
                                 thumb={thumb} 

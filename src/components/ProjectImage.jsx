@@ -33,7 +33,7 @@ const ProjectImage = ({
                 setPlaying(false)
             }
         }
-    }, [timerPaused])
+    }, [timerPaused, index, imageIndex])
 
     useEffect(() => {
         // console.log("check video loaded: ", videoLoaded)
@@ -52,7 +52,7 @@ const ProjectImage = ({
                 }
             }
         }
-    }, [videoLoaded])
+    }, [videoLoaded, index. imageIndex])
 
     return (
         <div className="project-image">

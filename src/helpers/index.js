@@ -1,4 +1,5 @@
 export const arrangeMobilePosts = posts => {
+    console.log(posts)
     var noOrderPosts = []
     var orderedPosts = []
     var mobilePosts = []
@@ -10,10 +11,37 @@ export const arrangeMobilePosts = posts => {
             orderedPosts.push(post)
         }
     })
-    orderedPosts = orderedPosts.sort(function (a,b) { return parseInt(a.acf.mobile_order) - parseInt(b.acf.mobile_order)})
-    noOrderPosts.map(post => orderedPosts.push(post))
 
-    orderedPosts.map(post => {
+    orderedPosts.sort((a,b) => {
+        if (parseInt(a.acf.mobile_order) === parseInt(b.acf.mobile_order)) {
+            return posts.indexOf(a) - posts.indexOf(b)
+        } else {
+            return  parseInt(a.acf.mobile_order) - parseInt(b.acf.mobile_order)
+        }
+    })
+
+    // orderedPosts = orderedPosts.sort(function (a,b) { return parseInt(a.acf.mobile_order) - parseInt(b.acf.mobile_order)})
+    
+    
+    const rearrangedArray = []
+    let orderedIndex = 0
+    let unorderedIndex = 0
+
+    posts.forEach(post => {
+        if (post.acf.mobile_order.length === 0) {
+            rearrangedArray.push(noOrderPosts[unorderedIndex])
+            unorderedIndex++
+        } else {
+            rearrangedArray.push(orderedPosts[orderedIndex])
+            orderedIndex++
+        }
+    })
+
+
+
+    // noOrderPosts.map(post => orderedPosts.push(post))
+
+    rearrangedArray.map(post => {
         var imageArray = []
         for (var i=1; i<21; i++) {
             if (post.acf[`portfolio_image_portrait_${i}`] || post.acf[`portfolio_video_portrait_${i}`]) {
@@ -40,6 +68,7 @@ export const arrangeMobilePosts = posts => {
 }
 
 export const arrangeDesktopPosts = posts => {
+    console.log(posts)
     var noOrderPosts = []
     var orderedPosts = []
     var desktopPosts = []
@@ -51,10 +80,33 @@ export const arrangeDesktopPosts = posts => {
             orderedPosts.push(post)
         }
     })
-    orderedPosts = orderedPosts.sort(function (a,b) { return parseInt(a.acf.desktop_order) - parseInt(b.acf.desktop_order)})
-    noOrderPosts.map(post => orderedPosts.push(post))
 
-    orderedPosts.map(post => {
+    orderedPosts.sort((a,b) => {
+        if (parseInt(a.acf.desktop_order) === parseInt(b.acf.desktop_order)) {
+            return posts.indexOf(a) - posts.indexOf(b)
+        } else {
+            return parseInt(a.acf.desktop_order) - parseInt(b.acf.desktop_order)
+        }
+    })
+
+    const rearrangedArray = []
+    let orderedIndex = 0
+    let unorderedIndex = 0
+
+    posts.forEach(post => {
+        if (post.acf.desktop_order.length === 0) {
+            rearrangedArray.push(noOrderPosts[unorderedIndex])
+            unorderedIndex++
+        } else {
+            rearrangedArray.push(orderedPosts[orderedIndex])
+            orderedIndex++
+        }
+    })
+
+    // orderedPosts = orderedPosts.sort(function (a,b) { return parseInt(a.acf.desktop_order) - parseInt(b.acf.desktop_order)})
+    // noOrderPosts.map(post => orderedPosts.push(post))
+
+    rearrangedArray.map(post => {
         var imageArray = []
 
         for (var i=1; i<21; i++) {

@@ -32,7 +32,7 @@ const Projects = () => {
                     <Loader />
                 ) : leo.dataError ? (
                     <Error />
-                ) : size.width > 850  ? <DesktopProject /> : <MobileProject />
+                ) : ( size.width < 850 || leo.isTablet )  ? <MobileProject /> : <DesktopProject />
             }
         </>
     )
