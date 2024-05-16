@@ -29,6 +29,10 @@
     -ms-overflow-style: none;
     mask-image: none;
     transition: all .3s ease-in-out;
+
+    span {
+        font-style: italic;
+    }
 }
 
 .project-info-fade-mask {
