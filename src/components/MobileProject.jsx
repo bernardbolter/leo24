@@ -6,19 +6,23 @@ import useTimeout from "@/helpers/useSetTimeout"
 import About from "./About"
 import ProjectInfo from "./ProjectInfo"
 import Thumbs from "./Thumbs"
+import LowPowerThumbs from "./LowPowerThumbs"
 import ProjectImages from "./ProjectImages"
 import ProjectNav from "./ProjectNav"
+import LowPowerProjectNav from "./LowPowerProjectNav"
 
 import BlackLoader from "./BlackLoader"
 import ProjectLoader from "./ProjectLoader"
 
 const MobileProject = () => {
     const [leo] = useContext(LeoContext)
-    console.log("is low: ", leo.isLowPower)
+    // console.log("is low: ", leo.isLowPower)
+    // console.log(leo.mobileProjects)
 
     const [imagesCount, setImagesCount] = useState([])
     const [imageIndex, setImageIndex] = useState(0)
     const [currentImageLength, setCurrentImageLength] = useState(5000)
+    const [nextProjectSet, setNextProjectSet] = useState(false)
 
     const [projectLoaded, setProjectLoaded] = useState(false)
 
@@ -38,21 +42,29 @@ const MobileProject = () => {
     // decide which project to view if coming from overviews, or choose first project
     // and if on low power mode select major project
     useEffect(() => {
-        var nextProject = []
-        if (leo.isLowPower) {
-            const filteredMobile = leo.mobileProjects.filter(project => project.acf.overview_size === 'large-square' || project.acf.overview_size === 'landscape' || project.acf.overview_size === 'portrait')
-            nextProject = filteredMobile[Math.floor(Math.random()*filteredMobile.length)];
-        } else {
-            var thisID = leo.newProjectId === 0 ? leo.mobileProjects[0].id : leo.newProjectId
-            var nextProjectArray = leo.mobileProjects.filter(project => project.id === thisID)
-            nextProject = nextProjectArray[0]
+        if ((Object.keys(mobileCurrentProject).length === 0 && !nextProjectSet)) {
+            var nextProject = []
+            // console.log('in effect: ', mobileCurrentProject, leo.isLowPower)
+            if (leo.isLowPower) {
+                const filteredMobile = leo.mobileProjects.filter(project => project.acf.overview_size === 'large-square' || project.acf.overview_size === 'landscape' || project.acf.overview_size === 'portrait')
+                nextProject = filteredMobile[Math.floor(Math.random()*filteredMobile.length)];
+                console.log('in low: ', nextProject)
+            } else {
+                var thisID = leo.newProjectId === 0 ? leo.mobileProjects[0].id : leo.newProjectId
+                var nextProjectArray = leo.mobileProjects.filter(project => project.id === thisID)
+                nextProject = nextProjectArray[0]
+            }
+            console.log("before: ", mobileCurrentProject)
+            setMobileCurrentProject(nextProject)
+            console.log("after: ", mobileCurrentProject)
+            setImageIndex(0)
+            setNextProjectSet(true)
         }
-        setMobileCurrentProject(nextProject)
-        setImageIndex(0)
     }, [leo.newProjectId, leo.mobileProjects])
 
     // load new project with fade in
     useEffect(() => {
+        // console.log("in load: ", mobileCurrentProject)
         if (!projectLoaded && Object.keys(mobileCurrentProject).length !== 0) {
             setProjectLoaded(false)
             if (imagesCount.length === mobileCurrentProject.imageArray.length) {
@@ -152,7 +164,7 @@ const MobileProject = () => {
         
     return (
         <>
-            {Object.keys(mobileCurrentProject).length === 0 ? (
+            {(Object.keys(mobileCurrentProject).length === 0) && !nextProjectSet ? (
                 <BlackLoader />
             ) : (
                 <AnimatePresence>
@@ -162,17 +174,27 @@ const MobileProject = () => {
                     >
                         <About key={`${mobileCurrentProject.id}-mobile-about`} />
                         <ProjectInfo project={mobileCurrentProject}  key={`${mobileCurrentProject.id}-mobile-project-info`} />
-                        <Thumbs
-                            thumbs={mobileCurrentProject.imageArray}
-                            imageIndex={imageIndex}
-                            setImageIndex={setImageIndex}
-                            clearTimer={clearMobileTimer}
-                            resetTimer={resetMobileTimer}
-                            timerPaused={mobileTimerPaused}
-                            setTimerPaused={(setMobileTimerPaused)}
-                            projectLoaded={projectLoaded}
-                            key={`${mobileCurrentProject.id}-mobile-thumbs`} 
-                        />
+                        {!leo.isLowPower ? (
+                            <Thumbs
+                                thumbs={mobileCurrentProject.imageArray}
+                                imageIndex={imageIndex}
+                                setImageIndex={setImageIndex}
+                                clearTimer={clearMobileTimer}
+                                resetTimer={resetMobileTimer}
+                                timerPaused={mobileTimerPaused}
+                                setTimerPaused={(setMobileTimerPaused)}
+                                projectLoaded={projectLoaded}
+                                key={`${mobileCurrentProject.id}-mobile-thumbs`} 
+                            />
+                        ) : (
+                            <LowPowerThumbs
+                                thumbs={mobileCurrentProject.imageArray}
+                                imageIndex={imageIndex}
+                                setImageIndex={setImageIndex}
+                                projectLoaded={projectLoaded}
+                                key={`${mobileCurrentProject.id}-mobile-thumbs`} 
+                            />
+                        )}
                     </motion.div>
                     {!projectLoaded && <ProjectLoader 
                             image={mobileCurrentProject.acf.loading_image_portrait.sizes.medium} 
@@ -196,19 +218,33 @@ const MobileProject = () => {
                             key={`${mobileCurrentProject.id}-mobile-project-images`}
                         />
                     </motion.div>
-                    <ProjectNav
-                        imageIndex={imageIndex}
-                        setImageIndex={setImageIndex}
-                        timerPaused={mobileTimerPaused}
-                        setTimerPaused={setMobileTimerPaused}
-                        images={mobileCurrentProject.imageArray}
-                        nextProject={nextProject}
-                        clearTimer={clearMobileTimer}
-                        resetTimer={clearMobileTimer}
-                        projectLoaded={projectLoaded}
-                        setProjectLoaded={setProjectLoaded}
-                        key={`${mobileCurrentProject.id}-mobile-project-nav`}
-                    />
+
+                    {!leo.isLowPower ? (
+                        <ProjectNav
+                            imageIndex={imageIndex}
+                            setImageIndex={setImageIndex}
+                            timerPaused={mobileTimerPaused}
+                            setTimerPaused={setMobileTimerPaused}
+                            images={mobileCurrentProject.imageArray}
+                            nextProject={nextProject}
+                            clearTimer={clearMobileTimer}
+                            resetTimer={clearMobileTimer}
+                            projectLoaded={projectLoaded}
+                            setProjectLoaded={setProjectLoaded}
+                            key={`${mobileCurrentProject.id}-mobile-project-nav`}
+                        />
+                    ) : (
+                        <LowPowerProjectNav 
+                            imageIndex={imageIndex}
+                            setImageIndex={setImageIndex}
+                            images={mobileCurrentProject.imageArray}
+                            nextProject={nextProject}
+                            projectLoaded={projectLoaded}
+                            setProjectLoaded={setProjectLoaded}
+                            key={`${mobileCurrentProject.id}-mobile-project-nav`}
+                        />
+                    )}
+                    
                 </AnimatePresence>
             )}
         </>
