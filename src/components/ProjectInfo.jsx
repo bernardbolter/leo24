@@ -20,7 +20,8 @@ const infos = [
     { slug: "design", name: "Design"},
     { slug: "design_director", name: "Design Direction"},
     { slug: "director", name: "Director"},
-    { slug: "editor", name: "CGI"},
+    { slug: "editor", name: "Editor"},
+    { slug: "editors", name: "Editors"},
     { slug: "editorial_design", name: "Editorial Design"},
     { slug: "exhibition_design", name: "Exhibition Design"},
     { slug: "fashion_editor", name: "Fashion Editor"},
@@ -72,7 +73,7 @@ const ProjectInfo = ({ project }) => {
             }
         } else {
             if (leo.aboutOpen) {
-                return -126
+                return -108
             } else {
                 return 0
             }

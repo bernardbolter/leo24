@@ -28,7 +28,7 @@ const LowPowerThumbs = ({
             className="thumbs-container low-thumb-container"
             style={{
                 display: showDisplay,
-                left: size.width < 850 ? 10 : 185 + leo.currentTitleWidth
+                left: size.width < 850 ? 10 : 167 + leo.currentTitleWidth
             }}    
         >
             <AnimatePresence>

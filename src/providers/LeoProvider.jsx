@@ -13,7 +13,7 @@ const LeoProvider = ({ children }) => {
         dataError: false,
         aboutError: false,
         impressumError: false,
-        isLowPower: true,
+        isLowPower: false,
         rawPosts: [],
         about: {},
         desktopProjects: [],

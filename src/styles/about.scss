@@ -42,7 +42,7 @@
     }
 
     @media screen and (min-width: 850px) {
-        font-size: 15px;
+        font-size: 13px;
         height: 39px;
     }
 }
@@ -94,7 +94,7 @@
 }
 
 .about-info-fade {
-    width: calc(100% - 50px);
+    width: calc(100% - 51px);
     height: 60vh;
     overflow-y: scroll;
     left: 0;
@@ -109,6 +109,10 @@
 
     span {
         font-style: italic;
+    }
+
+    @media screen and (min-width: $breakpoint) {
+        height: calc(100vh - 98px);
     }
 }
 
@@ -135,7 +139,7 @@
 
     @media screen and (min-width: $breakpoint) {
         width: 400px;
-        max-height: calc(100vh - 98px);
+        height: calc(100vh - 98px);
     }
 
     @media screen and (min-width: 850px) {
@@ -156,14 +160,14 @@
     }
 
     p {
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 400px;
         line-height: 17px;
         color: #bbb;
         margin: 0 0 20px 10px;
 
         @media screen and (min-width: 850px) {
-            font-size: 13px;
+            font-size: 11px;
             margin: 0 0 25px 10px;
         }
     }

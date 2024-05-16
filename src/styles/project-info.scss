@@ -33,6 +33,10 @@
     span {
         font-style: italic;
     }
+
+    @media screen and (min-width: 850px) {
+        height: calc(100vh - 100px);
+    }
 }
 
 .project-info-fade-mask {
@@ -55,7 +59,7 @@
     backdrop-filter: blur(20px);
 
     @media screen and (min-width: 850px) {
-        max-height: calc(100vh - 100px);
+        height: calc(100vh - 100px);
         top: 59px;
         padding: 15px;
         width: 400px;
@@ -88,13 +92,13 @@
     }
 
     p {
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 400;
-        color: #999;
+        color: #BBB;
         margin: 0 0 15px 10px;
 
         @media screen and (min-width: 850px) {
-            font-size: 13px;
+            font-size: 11px;
             margin: 0 0 25px 10px;
         }
     }
@@ -146,9 +150,9 @@
     }
 
     @media screen and (min-width: 850px) {
-        font-size: 15px;
+        font-size: 13px;
         height: 39px;
-        left: 185px;
+        left: 167px;
     }
 }
 
@@ -176,7 +180,7 @@
         width: 39px;
         height: 39px;
         margin: 0 0 0 10px;
-        left: 175px;
+        left: 157px;
     }
 
     &:hover {
