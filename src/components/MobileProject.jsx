@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useMemo } from "react"
+import { useContext, useEffect, useState } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
 import useTimeout from "@/helpers/useSetTimeout"
@@ -14,6 +14,7 @@ import ProjectLoader from "./ProjectLoader"
 
 const MobileProject = () => {
     const [leo] = useContext(LeoContext)
+    console.log("is low: ", leo.isLowPower)
 
     const [imagesCount, setImagesCount] = useState([])
     const [imageIndex, setImageIndex] = useState(0)

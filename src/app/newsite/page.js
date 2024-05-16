@@ -28,7 +28,15 @@ const Home = () => {
         })
     }, [])
 
-    console.log(leo.isTablet)
+    useEffect(() => {
+        console.log(size.width)
+        if (size.width !== 0) {
+            if (leo.isLowPower && size.width < 850) {
+                console.log("push projects")
+                router.push('/projects')
+            }
+        }
+    }, [leo.isLowPower, size])
 
     return (
         <>

@@ -2,20 +2,18 @@
 
 import React, { useState, createContext, useEffect } from 'react'
 import { arrangeDesktopPosts, arrangeMobilePosts } from '@/helpers'
-import { useWindowSize } from '@/helpers/useWindowSize'
 import { isTablet } from 'react-device-detect'
 
 export const LeoContext = createContext()
 
 const LeoProvider = ({ children }) => {
-    const size = useWindowSize()
     const [leo, setLeo] = useState({
         isTablet: false,
         dataLoaded: false,
         dataError: false,
         aboutError: false,
         impressumError: false,
-        isLowPower: true,
+        isLowPower: false,
         rawPosts: [],
         about: {},
         desktopProjects: [],
@@ -39,7 +37,6 @@ const LeoProvider = ({ children }) => {
     })
 
     useEffect(() => {
-        console.log("is T: ", isTablet)
         setLeo(state => ({ ...state, isTablet: isTablet }))
     }, [isTablet])
     

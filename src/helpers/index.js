@@ -1,5 +1,4 @@
 export const arrangeMobilePosts = posts => {
-    console.log(posts)
     var noOrderPosts = []
     var orderedPosts = []
     var mobilePosts = []
@@ -64,11 +63,12 @@ export const arrangeMobilePosts = posts => {
         mobilePosts.push({ ...post, imageArray: imageArray, overview: overviewObject })
     })
 
+    // console.log("arrange mobile: ", mobilePosts)
+
     return mobilePosts
 }
 
 export const arrangeDesktopPosts = posts => {
-    console.log(posts)
     var noOrderPosts = []
     var orderedPosts = []
     var desktopPosts = []

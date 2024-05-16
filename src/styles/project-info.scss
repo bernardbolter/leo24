@@ -15,11 +15,30 @@
     }
 }
 
+.project-info-fade {
+    width: calc(100vw - 51px);
+    height: 60vh;
+    left: 0;
+    top: 0;
+    border-radius: 15px;
+    max-width: 400px;
+    overflow-y: scroll;
+    padding: 0;
+    z-index: 1001;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    mask-image: none;
+    transition: all .3s ease-in-out;
+}
+
+.project-info-fade-mask {
+    mask-image: linear-gradient(to bottom, black calc(100% - 150px), transparent 97%);
+    transition: all .3s ease-in-out;
+}
+
 .project-info-container {
     width: calc(100vw - 51px);
-    max-height: calc(60vh);
-    overflow: scroll;
-    overflow-x: hidden;
+    height: 60vh;
     background: $info-back;
     position: fixed;
     left: 10px;
@@ -30,8 +49,6 @@
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 
     @media screen and (min-width: 850px) {
         max-height: calc(100vh - 100px);

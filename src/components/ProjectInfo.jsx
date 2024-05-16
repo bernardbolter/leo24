@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef, useEffect } from "react"
+import { useContext, useState, useMemo, useRef, useEffect } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
 import { useWindowSize } from "@/helpers/useWindowSize"
@@ -53,7 +53,9 @@ const ProjectInfo = ({ project }) => {
     const [leo, setLeo] = useContext(LeoContext)
     const { acf } = project
     const titleRef = useRef(null)
+    const infoRef = useRef(null)
     const size = useWindowSize()
+    const [infoScrollDone, setInfoScrollDone] = useState(false)
 
     useEffect(() => {
         if (titleRef.current !== null) {
@@ -85,6 +87,16 @@ const ProjectInfo = ({ project }) => {
         return DOMPurify.sanitize(acf.handle)
     }, [acf])
 
+    const handleScroll = () => {
+        if (infoRef.current) {
+            if (infoRef.current.scrollTop === infoRef.current.scrollTopMax) {
+                setInfoScrollDone(true)
+            } else {
+                setInfoScrollDone(false)
+            }
+        }
+    }
+
     return (
         <section className="project-info">
             {leo.infoOpen ? (
@@ -114,6 +126,7 @@ const ProjectInfo = ({ project }) => {
                     }))}
                 >{project.title.rendered}</motion.h1>
             )}
+
             <AnimatePresence>
                 {leo.infoOpen && (
                     <motion.div 
@@ -124,6 +137,12 @@ const ProjectInfo = ({ project }) => {
                         transition={{ duration: .7 }}
                         key="project-info-container"
                     >
+
+                        <div 
+                            className={infoScrollDone ? "project-info-fade" : "project-info-fade project-info-fade-mask"}
+                            ref={infoRef}
+                            onScroll={handleScroll}
+                        >
                             {acf.project_summary.length !== 0 && (
                                 <h1 dangerouslySetInnerHTML={{ __html: summary }}/>
                             )}
@@ -141,6 +160,7 @@ const ProjectInfo = ({ project }) => {
                             {acf.handle.length !== 0 && (
                                 <h2 dangerouslySetInnerHTML={{ __html: handle}} />
                             )}
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>          

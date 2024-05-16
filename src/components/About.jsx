@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react"
+import { useContext, useMemo, useRef, useState } from "react"
 import { LeoContext } from "@/providers/LeoProvider"
 import { AnimatePresence, motion } from "framer-motion"
 
@@ -12,7 +12,8 @@ import Title from "./Title"
 const About = () => {
     const [leo] = useContext(LeoContext)
     const pathname = usePathname()
-    // console.log(pathname)
+    const aboutRef = useRef(null)
+    const [aboutScrollDone, setAboutScrollDone] = useState(false)
 
     const description = useMemo(() => {
         return DOMPurify.sanitize(leo.about.description)
@@ -26,6 +27,15 @@ const About = () => {
         return DOMPurify.sanitize(leo.about.clients)
     })
 
+    const handleAboutScroll = () => {
+        if (aboutRef.current) {
+            if (aboutRef.current.scrollTop === aboutRef.current.scrollTopMax) {
+                setAboutScrollDone(true)
+            } else {
+                setAboutScrollDone(false)
+            }
+        }
+    }
 
     return (
         <section className={pathname === "/projects" ? "about-outter-projects" : "about-outter"}>
@@ -40,21 +50,27 @@ const About = () => {
                         className="about-container"
                         key="about-container"
                     >
-                    <h2 dangerouslySetInnerHTML={{__html: description}}/>
-                    <p>About</p>
-                    <a className="about-email" href="mailto:contact@leonhardlaupichler.com">Contact[at]leonhardlaupichler.com</a>
-                    <p>Email</p>
-                    <h2 className="clock-container"><Clock format={'HH:mm:ss'} ticking={true} timezone={'Europe/Berlin'} /> CET</h2>
-                    <p>Current Time</p>
-                    <div className="services-container">
-                        <p dangerouslySetInnerHTML={{ __html: services }} />
-                    </div>
-                    <p>Services</p>
-                    <div className="clients-container">
-                        <p dangerouslySetInnerHTML={{ __html: clients }} />
-                    </div>
-                    <p>Selected Clients</p>
-                    <a className="imprint" href="/imprint">Imprint</a>
+                        <div
+                            className={aboutScrollDone ? "about-info-fade" : "about-info-fade about-info-fade-mask"}
+                            ref={aboutRef}
+                            onScroll={handleAboutScroll}
+                        >
+                            <h2 dangerouslySetInnerHTML={{__html: description}}/>
+                            <p>About</p>
+                            <a className="about-email" href="mailto:contact@leonhardlaupichler.com">Contact[at]leonhardlaupichler.com</a>
+                            <p>Email</p>
+                            <h2 className="clock-container"><Clock format={'HH:mm:ss'} ticking={true} timezone={'Europe/Berlin'} /> CET</h2>
+                            <p>Current Time</p>
+                            <div className="services-container">
+                                <p dangerouslySetInnerHTML={{ __html: services }} />
+                            </div>
+                            <p>Services</p>
+                            <div className="clients-container">
+                                <p dangerouslySetInnerHTML={{ __html: clients }} />
+                            </div>
+                            <p>Selected Clients</p>
+                            <a className="imprint" href="/imprint">Imprint</a>
+                        </div>
                 </motion.div>
                 )}
             </AnimatePresence>
