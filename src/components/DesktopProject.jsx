@@ -17,6 +17,7 @@ const DesktopProject = () => {
     const [imagesCount, setImagesCount] = useState([])
     const [imageIndex, setImageIndex] = useState(0)
     const [currentImageLength, setCurrentImageLength] = useState(5000)
+    const [nextProjectSet, setNextProjectSet] = useState(false)
 
     const [projectLoaded, setProjectLoaded] = useState(false)
 
@@ -34,10 +35,21 @@ const DesktopProject = () => {
 
     // decide which project to view if coming from overviews, or chose first project
     useEffect(() => {
-        var newId = leo.newProjectId === 0 ? leo.desktopProjects[0].id : leo.newProjectId
-        var nextProjectArray = leo.desktopProjects.filter(project => project.id === newId)
-        setDesktopCurrentProject(nextProjectArray[0])
-        setImageIndex(0)
+        if ((Object.keys(desktopCurrentProject).length === 0 && !nextProjectSet)) {
+            var nextProject = []
+            console.log(leo.newProjectId)
+            if (leo.newProjectId === 0) {
+                const filteredDesktop = leo.desktopProjects.filter(project => project.acf.overview_size === 'large-square' || project.acf.overview_size === 'landscape' || project.acf.overview_size === 'portrait')
+                nextProject = filteredDesktop[Math.floor(Math.random()*filteredDesktop.length)];
+            } else {
+                var nextProjectArray = leo.desktopProjects.filter(project => project.id === leo.newProjectId)
+                nextProject = nextProjectArray[0]
+            }
+            console.log(nextProject.id)
+            setDesktopCurrentProject(nextProject)
+            setImageIndex(0)
+            setNextProjectSet(true)
+        }
     }, [leo.newProjectId, leo.desktopProjects])
 
     // load new project with fade in

@@ -44,7 +44,7 @@ const MobileOverviews = ({ projects }) => {
         setTimeout(() => {
             setShowAbout(true)
         }, 500)
-    }, 3000)
+    }, 9000)
 
     return (
         <div className="overview-container">

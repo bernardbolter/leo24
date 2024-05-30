@@ -24,21 +24,24 @@
     padding: 0 10px 50px 10px;
     color: black;
     overflow-x: hidden;
+    width: 94vw;
 
     p {
         line-height: 1.4em;
         font-weight: 400;
-        font-size: 14px;   
+        font-size: 14px;
+        padding: 5px 0;  
     }
 }
 
 .imprint-back {
-    width: 39px;
-    height: 39px;
+    width: 44px;
+    height: 44px;
     opacity: .8;
     transform: scale(1);
     transition: all .5s ease-in-out;
     cursor: pointer;
+    margin: 9px;
 
     svg {
         width: 100%;

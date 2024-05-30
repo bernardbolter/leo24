@@ -29,7 +29,7 @@ const About = () => {
 
     const handleAboutScroll = () => {
         if (aboutRef.current) {
-            if (aboutRef.current.scrollTop === aboutRef.current.scrollTopMax) {
+            if ((aboutRef.current.scrollHeight - aboutRef.current.clientHeight) === aboutRef.current.scrollTop) {
                 setAboutScrollDone(true)
             } else {
                 setAboutScrollDone(false)
@@ -68,7 +68,7 @@ const About = () => {
                             <div className="clients-container">
                                 <p dangerouslySetInnerHTML={{ __html: clients }} />
                             </div>
-                            <p>Selected Clients</p>
+                            <p>Selected Clients and Collaborators</p>
                             <a className="imprint" href="/imprint">Imprint</a>
                         </div>
                 </motion.div>

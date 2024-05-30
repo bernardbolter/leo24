@@ -90,7 +90,7 @@ const ProjectInfo = ({ project }) => {
 
     const handleScroll = () => {
         if (infoRef.current) {
-            if (infoRef.current.scrollTop === infoRef.current.scrollTopMax) {
+            if ((infoRef.current.scrollHeight - infoRef.current.clientHeight) === infoRef.current.scrollTop) {
                 setInfoScrollDone(true)
             } else {
                 setInfoScrollDone(false)

@@ -51,7 +51,7 @@ const Overview = ({
                     float={true}
                     style={{
                         zIndex: 2001,
-                        fontSize: '15px',
+                        fontSize: '13px',
                         background: 'transparent'
                     }}
                     place="top-start"

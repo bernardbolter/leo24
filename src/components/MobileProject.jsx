@@ -50,9 +50,13 @@ const MobileProject = () => {
                 nextProject = filteredMobile[Math.floor(Math.random()*filteredMobile.length)];
                 console.log('in low: ', nextProject)
             } else {
-                var thisID = leo.newProjectId === 0 ? leo.mobileProjects[0].id : leo.newProjectId
-                var nextProjectArray = leo.mobileProjects.filter(project => project.id === thisID)
-                nextProject = nextProjectArray[0]
+                if (leo.newProjectId === 0) {
+                    const filteredMobile = leo.mobileProjects.filter(project => project.acf.overview_size === 'large-square' || project.acf.overview_size === 'landscape' || project.acf.overview_size === 'portrait')
+                    nextProject = filteredMobile[Math.floor(Math.random()*filteredMobile.length)];
+                } else {
+                    var nextProjectArray = leo.mobileProjects.filter(project => project.id === leo.newProjectId)
+                    nextProject = nextProjectArray[0]
+                }
             }
             console.log("before: ", mobileCurrentProject)
             setMobileCurrentProject(nextProject)
