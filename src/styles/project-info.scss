@@ -15,9 +15,13 @@
     }
 }
 
+.project-info-fade > div:last-child > p:last-child {
+    margin-bottom: 10px;
+}
+
 .project-info-fade {
     width: calc(100vw - 51px);
-    height: 60vh;
+    max-height: 60vh;
     left: 0;
     top: 0;
     border-radius: 15px;
@@ -35,7 +39,7 @@
     }
 
     @media screen and (min-width: 850px) {
-        height: calc(100vh - 100px);
+        max-height: calc(100vh - 100px);
     }
 }
 
@@ -50,22 +54,22 @@
 
 .project-info-container {
     width: calc(100vw - 51px);
-    height: 60vh;
+    max-height: 60vh;
     background: $info-back;
     position: fixed;
     left: 10px;
     top: 54px;
     border-radius: 15px;
     max-width: 400px;
-    padding: 15px 15px 6px 15px;
+    padding: 10px 5px;
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
 
     @media screen and (min-width: 850px) {
-        height: calc(100vh - 100px);
+        max-height: calc(100vh - 100px);
         top: 59px;
-        padding: 15px;
+        padding: 10px 5px;
         width: 400px;
     }
 

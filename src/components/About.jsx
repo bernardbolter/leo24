@@ -58,7 +58,7 @@ const About = () => {
                             <h2 dangerouslySetInnerHTML={{__html: description}}/>
                             <p>About</p>
                             <a className="about-email" href="mailto:contact@leonhardlaupichler.com">Contact[at]leonhardlaupichler.com</a>
-                            <p>Email</p>
+                            <p className="about-email-title">Email</p>
                             <h2 className="clock-container"><Clock format={'HH:mm:ss'} ticking={true} timezone={'Europe/Berlin'} /> CET</h2>
                             <p>Current Time</p>
                             <div className="services-container">

@@ -50,7 +50,6 @@ const infos = [
 ]
 
 const ProjectInfo = ({ project }) => {
-    // console.log(project)
     const [leo, setLeo] = useContext(LeoContext)
     const { acf } = project
     const titleRef = useRef(null)
@@ -63,6 +62,22 @@ const ProjectInfo = ({ project }) => {
             setLeo(state => ({ ...state, currentTitleWidth: titleRef.current.clientWidth }))
         }
     }, [titleRef])
+
+    useEffect(() => {
+        if (infoRef.current) {
+            if (size.width > 850) {
+                console.log("div: ", infoRef.current.clientHeight)
+                console.log("win: ", size.height - 100)
+                if (infoRef.current.clientHeight < size.height - 100) {
+                    setInfoScrollDone(true)
+                }
+            } else {
+                if (infoRef.current.clientHeight < size.height * .6) {
+                    setInfoScrollDone(true)
+                }
+            }
+        }
+    }, [infoRef, size, leo.infoOpen])
 
     const infoLeft = useMemo(() => {
         if (size.width < 850) {
@@ -120,11 +135,13 @@ const ProjectInfo = ({ project }) => {
                         scale: 1.05,
                       }}
                     className="project-title"
-                    onClick={() => setLeo( state => ({
-                        ...state,
-                        infoOpen: true,
-                        aboutOpen: state.aboutOpen ? false : false
-                    }))}
+                    onClick={() => {
+                            setLeo( state => ({
+                            ...state,
+                            infoOpen: true,
+                            aboutOpen: state.aboutOpen ? false : false
+                        }))}
+                    }
                 >{project.title.rendered}</motion.h1>
             )}
 
