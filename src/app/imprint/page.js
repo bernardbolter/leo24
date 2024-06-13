@@ -24,7 +24,7 @@ const Imprint = () => {
       <div className="imprint-background" />
       <div 
         className="imprint-back"
-        onClick={() => router.back()}
+        onClick={() => router.push('/')}
       >
         <ImprintClose />
       </div>

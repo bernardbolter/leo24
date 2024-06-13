@@ -66,8 +66,6 @@ const ProjectInfo = ({ project }) => {
     useEffect(() => {
         if (infoRef.current) {
             if (size.width > 850) {
-                console.log("div: ", infoRef.current.clientHeight)
-                console.log("win: ", size.height - 100)
                 if (infoRef.current.clientHeight < size.height - 100) {
                     setInfoScrollDone(true)
                 }
