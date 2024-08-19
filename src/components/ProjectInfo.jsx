@@ -76,28 +76,6 @@ const ProjectInfo = ({ project }) => {
         }
     }, [infoRef.current, size.height])
 
-    // useEffect(() => {
-    //     if (infoRef.current) {
-    //         console.log("cli height: " , infoRef.current.clientHeight, size.height * .6)
-    //         console.log("donw 1: ", infoScrollDone)
-    //         if (infoRef.current.clientHeight < size.height * .6) {
-    //             setInfoScrollDone(true)
-    //         }
-    //         // if (size.width > 850) {
-    //         //     console.log("height start: ", infoRef.current.clientHeight)
-    //         //     if (infoRef.current.clientHeight < size.height * .6) {
-    //         //         setInfoScrollDone(true)
-    //         //     }
-    //         // } else {
-    //         //     console.log("height start: ", infoRef.current.clientHeight)
-    //         //     if (infoRef.current.clientHeight < size.height * .6) {
-    //         //         setInfoScrollDone(true)
-    //         //     }
-    //         // }
-    //     }
-    //     console.log("donw 2: ", infoScrollDone)
-    // }, [infoRef, size, leo.infoOpen])
-
     const infoLeft = useMemo(() => {
         if (size.width < 850) {
             if (leo.aboutOpen) {
@@ -113,14 +91,6 @@ const ProjectInfo = ({ project }) => {
             }
         }
     })
-
-    // const infoHeight = useMemo(() => {
-    //     if (size.width < 850) {
-    //         return '60vh'
-    //     } else {
-    //         return infoRef.current.clientHeight
-    //     }
-    // }, [infoRef])
 
     const summary = useMemo(() => {
         return DOMPurify.sanitize(acf.project_summary)
