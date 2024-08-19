@@ -3,10 +3,12 @@
 import React, { useState, createContext, useEffect } from 'react'
 import { arrangeDesktopPosts, arrangeMobilePosts } from '@/helpers'
 import { isTablet } from 'react-device-detect'
+import { useWindowSize } from '@/helpers/useWindowSize'
 
 export const LeoContext = createContext()
 
 const LeoProvider = ({ children }) => {
+    const size = useWindowSize()
     const [leo, setLeo] = useState({
         isTablet: false,
         dataLoaded: false,
@@ -39,6 +41,11 @@ const LeoProvider = ({ children }) => {
     useEffect(() => {
         setLeo(state => ({ ...state, isTablet: isTablet }))
     }, [isTablet])
+
+    // useEffect(() => {
+    //     console.log(size)
+    //     console.log(window.screen.orientation.type)
+    // }, [size])
     
     useEffect(() => {
         async function loadData() {

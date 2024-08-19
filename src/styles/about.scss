@@ -98,7 +98,6 @@
     overflow-y: scroll;
     left: 0;
     top: 0;
-    max-width: 400px;
     padding: 0;
     z-index: 1001;
     scrollbar-width: none;
@@ -111,7 +110,7 @@
     }
 
     @media screen and (min-width: $breakpoint) {
-        height: calc(100vh - 98px);
+        // height: calc(100vh - 73px);
     }
 }
 
@@ -125,14 +124,13 @@
 }
 
 .about-container {
-    width: calc(100% - 50px);
+    width: calc(100% - 30px);
     height: 60vh;
     background: $info-back;
     position: fixed;
     top: 54px;
     left: 10px;
     border-radius: 15px;
-    max-width: 400px;
     padding: 2px 5px;
     z-index: 999;
     -webkit-backdrop-filter: blur(20px);
@@ -142,7 +140,7 @@
 
     @media screen and (min-width: $breakpoint) {
         width: 400px;
-        height: calc(100vh - 98px);
+        // height: calc(100vh - 73px);
     }
 
     @media screen and (min-width: 850px) {
@@ -178,7 +176,7 @@
     .imprint {
         font-size: 13px;
         font-weight: 400;
-        margin: 20px 0 10px 10px;
+        margin: 20px 0 15px 10px;
         padding: 0;
         text-decoration: none;
         color: #eee;

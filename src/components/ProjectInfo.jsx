@@ -41,6 +41,7 @@ const infos = [
     { slug: "set_design", name: "Set Design"},
     { slug: "shoe_design", name: "Shoe Design"},
     { slug: "stylist", name: "Stylist"},
+    { slug: "styling", name: "Styling"},
     { slug: "talent", name: "Talent"},
     { slug: "type_design", name: "Typography"},
     { slug: "visuals", name: "Visuals"},
@@ -65,17 +66,37 @@ const ProjectInfo = ({ project }) => {
 
     useEffect(() => {
         if (infoRef.current) {
-            if (size.width > 850) {
-                if (infoRef.current.clientHeight < size.height - 100) {
-                    setInfoScrollDone(true)
-                }
+            console.log("client: ", infoRef.current.clientHeight)
+            console.log("window6: ", (size.height * .6))
+            if (infoRef.current.clientHeight < 400) {
+                setInfoScrollDone(true)
             } else {
-                if (infoRef.current.clientHeight < size.height * .6) {
-                    setInfoScrollDone(true)
-                }
+                setInfoScrollDone(false)
             }
         }
-    }, [infoRef, size, leo.infoOpen])
+    }, [infoRef.current, size.height])
+
+    // useEffect(() => {
+    //     if (infoRef.current) {
+    //         console.log("cli height: " , infoRef.current.clientHeight, size.height * .6)
+    //         console.log("donw 1: ", infoScrollDone)
+    //         if (infoRef.current.clientHeight < size.height * .6) {
+    //             setInfoScrollDone(true)
+    //         }
+    //         // if (size.width > 850) {
+    //         //     console.log("height start: ", infoRef.current.clientHeight)
+    //         //     if (infoRef.current.clientHeight < size.height * .6) {
+    //         //         setInfoScrollDone(true)
+    //         //     }
+    //         // } else {
+    //         //     console.log("height start: ", infoRef.current.clientHeight)
+    //         //     if (infoRef.current.clientHeight < size.height * .6) {
+    //         //         setInfoScrollDone(true)
+    //         //     }
+    //         // }
+    //     }
+    //     console.log("donw 2: ", infoScrollDone)
+    // }, [infoRef, size, leo.infoOpen])
 
     const infoLeft = useMemo(() => {
         if (size.width < 850) {
@@ -93,6 +114,14 @@ const ProjectInfo = ({ project }) => {
         }
     })
 
+    // const infoHeight = useMemo(() => {
+    //     if (size.width < 850) {
+    //         return '60vh'
+    //     } else {
+    //         return infoRef.current.clientHeight
+    //     }
+    // }, [infoRef])
+
     const summary = useMemo(() => {
         return DOMPurify.sanitize(acf.project_summary)
     }, [acf])
@@ -103,6 +132,8 @@ const ProjectInfo = ({ project }) => {
 
     const handleScroll = () => {
         if (infoRef.current) {
+            console.log(infoRef.current.scrollHeight, infoRef.current.clientHeight, infoRef.current.scrollTop)
+            console.log('total: ', (infoRef.current.scrollHeight - infoRef.current.clientHeight) === infoRef.current.scrollTop)
             if ((infoRef.current.scrollHeight - infoRef.current.clientHeight) === infoRef.current.scrollTop) {
                 setInfoScrollDone(true)
             } else {
@@ -152,12 +183,14 @@ const ProjectInfo = ({ project }) => {
                         exit={{ opacity: 0 }}
                         transition={{ duration: .7 }}
                         key="project-info-container"
+                        // style={{ maxHeight : infoHeight }}
                     >
 
                         <div 
                             className={infoScrollDone ? "project-info-fade" : "project-info-fade project-info-fade-mask"}
                             ref={infoRef}
                             onScroll={handleScroll}
+                            // style={{ maxHeight : infoHeight }}
                         >
                             {acf.project_summary.length !== 0 && (
                                 <h1 dangerouslySetInnerHTML={{ __html: summary }}/>

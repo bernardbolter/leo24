@@ -44,10 +44,13 @@ const MobileOverviews = ({ projects }) => {
         setTimeout(() => {
             setShowAbout(true)
         }, 500)
-    }, 9000)
+    }, 1000)
 
     return (
-        <div className="overview-container">
+        <div 
+            className="overview-container"
+            style={{ position: mobileOverviewsLoaded ? 'relative' : 'fixed' }}
+        >
             {!mobileOverviewsLoaded && <Loader />}
             {showAbout && (
                 <motion.div
