@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { LeoContext } from '@/providers/LeoProvider'
 import { useWindowSize } from '@/helpers/useWindowSize'
 
@@ -12,6 +12,7 @@ import MobileProject from '@/components/MobileProject'
 
 const Projects = () => {
     const [leo, setLeo] = useContext(LeoContext)
+    const [displayDesktop, setDisplayDesktop] = useState(true)
     const videoRef = useRef()
     const size = useWindowSize()
 
@@ -25,6 +26,19 @@ const Projects = () => {
         })
     }, [])
 
+    useEffect(() => {
+        const orientation = window.matchMedia('(orientation:landscape)').matches
+        if (orientation) {
+            setDisplayDesktop(true)
+        } else if (size.width < 850) {
+            setDisplayDesktop(false)
+        } else if (leo.isTablet) {
+            setDisplayDesktop(false)
+        } else {
+            setDisplayDesktop(true)
+        }
+    }, [size])
+
     return (
         <>
             <video ref={videoRef} src={'/video/leo_logo.mp4'} muted autoPlay playsInline id="testVideo"></video>
@@ -32,7 +46,7 @@ const Projects = () => {
                     <Loader />
                 ) : leo.dataError ? (
                     <Error />
-                ) : ( size.width < 850 || leo.isTablet )  ? <MobileProject /> : <DesktopProject />
+                ) : !displayDesktop ? <MobileProject /> : <DesktopProject />
             }
         </>
     )
