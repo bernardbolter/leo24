@@ -12,7 +12,7 @@ import Loader from "./Loader"
 import ProjectLoader from "./ProjectLoader"
 
 const DesktopProject = () => {
-    const [leo] = useContext(LeoContext)
+    const [leo, setLeo] = useContext(LeoContext)
 
     const [imagesCount, setImagesCount] = useState([])
     const [imageIndex, setImageIndex] = useState(0)
@@ -24,6 +24,8 @@ const DesktopProject = () => {
     const [desktopCurrentProject, setDesktopCurrentProject] = useState({})
     const [desktopTimerPaused, setDesktopTimerPaused] = useState(false)
     const [random] = useState(Math.random() * 1)
+
+    // console.log("desk: ", leo.newProjectId)
 
     // reset data on page navigation or reload
     useEffect(() => {
@@ -129,12 +131,15 @@ const DesktopProject = () => {
             setImageIndex(0)
             setImagesCount([])
             setDesktopCurrentProject(leo.desktopProjects[0])
+            setLeo(state => ({ ...state, newProjectId: leo.desktopProjects[0].id}))
         } else {
             setDesktopTimerPaused(true)
             setProjectLoaded(false)
             setImageIndex(0)
             setImagesCount([])
             setDesktopCurrentProject(leo.desktopProjects[currentIndex + 1])
+            console.log("dat: ", leo.desktopProjects[currentIndex + 1].id)
+            setLeo(state => ({ ...state, newProjectId: leo.desktopProjects[currentIndex + 1].id}))
         }
     }
 

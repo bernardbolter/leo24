@@ -15,7 +15,7 @@ import BlackLoader from "./BlackLoader"
 import ProjectLoader from "./ProjectLoader"
 
 const MobileProject = () => {
-    const [leo] = useContext(LeoContext)
+    const [leo, setLeo] = useContext(LeoContext)
     // console.log("is low: ", leo.isLowPower)
     // console.log(leo.mobileProjects)
 
@@ -29,6 +29,8 @@ const MobileProject = () => {
     const [mobileCurrentProject, setMobileCurrentProject] = useState({})
     const [mobileTimerPaused, setMobileTimerPaused] = useState(false)
     const [random] = useState(Math.random() * 1)
+
+    // console.log("mob: ", leo.newProjectId)
 
     // reset data on page navigation or reload
     useEffect(() => {
@@ -142,12 +144,14 @@ const MobileProject = () => {
             setImageIndex(0)
             setImagesCount([])
             setMobileCurrentProject(leo.mobileProjects[0])
+            setLeo(state => ({ ...state, newProjectId: leo.mobileProjects[0].id}))
          } else {
             setMobileTimerPaused(false)
             setProjectLoaded(false)
             setImageIndex(0)
             setImagesCount([])
             setMobileCurrentProject(leo.mobileProjects[currentIndex + 1])
+            setLeo(state => ({ ...state, newProjectId: leo.mobileProjects[currentIndex + 1].id}))
          }
     }
 
